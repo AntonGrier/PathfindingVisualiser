@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="bb562bf8-7e49-4392-af48-ac7a2d231c05" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="1bmVThDl2nul3cVZv1e8oo8tgez" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="C:\Users\antyg\Documents\Projects\path_finder\node_modules\prettier" />
+    <property name="ts.external.directory.path" value="C:\Users\antyg\Documents\Projects\path_finder\node_modules\typescript\lib" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bb562bf8-7e49-4392-af48-ac7a2d231c05" name="Default Changelist" comment="" />
+      <created>1589237264730</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589237264730</updated>
+      <workItem from="1589237266734" duration="132000" />
+      <workItem from="1589237425148" duration="7550000" />
+      <workItem from="1589308629346" duration="7234000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="921" y="461" width="700" height="530" key="recent.locations.popup" timestamp="1589315121434">
+      <screen x="0" y="30" width="2560" height="1410" />
+    </state>
+    <state x="921" y="461" width="700" height="530" key="recent.locations.popup/0.30.2560.1410/2560.30.1920.1050@0.30.2560.1410" timestamp="1589315121434" />
+    <state x="936" y="348" key="run.anything.popup" timestamp="1589258974356">
+      <screen x="0" y="30" width="2560" height="1410" />
+    </state>
+    <state x="936" y="348" key="run.anything.popup/0.30.2560.1410/2560.30.1920.1050@0.30.2560.1410" timestamp="1589258974356" />
+  </component>
+</project>

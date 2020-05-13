@@ -1,0 +1,26 @@
+.cell {
+    border-color: black;
+    border-style: solid;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: top;
+    margin: 1.5px;
+}
+
+.cell-start {
+    background-color: green;
+}
+
+.cell-finish {
+    background-color: mediumpurple;
+}
+
+.grid {
+    margin-top: 5%;
+    display:inline-block;
+}
+
+.app {
+    text-align: center;
+}
