@@ -1,33 +1,42 @@
-import {Component} from "react";
 import * as React from "react";
-import Pathfinder, {FINISHPOS, STARTPOS} from "./Pathfinder";
+import {Component} from "react";
+import {FINISHPOS, MouseState, NodeType, STARTPOS} from "./Pathfinder";
+import {render} from "react-dom";
 
-export default class Cell extends Component<{x: number, y: number}, {isStart: boolean, isFinish: boolean}>{
+export default class Cell extends Component<
+    {
+        x: number,
+        y: number,
+        nodeType: NodeType,
+        updateMouseState: (x: number, y: number, eventType: string) => void
+    },
+    {}>{
     constructor(props: any) {
         super(props);
-        this.state = {
-            isStart: false,
-            isFinish: false,
-        };
+        this.state = {};
     }
 
-    handleClick(event: React.MouseEvent<HTMLElement>) {
-
+    handleMouseEvent(event: React.MouseEvent<HTMLElement>): void {
+        let eventType: string =  event.type;
+        this.props.updateMouseState(this.props.x, this.props.y, eventType);
     }
-
-    handleMouseLeave(event: React.MouseEvent<HTMLElement>) {
-
-    }
-
 
     render(): any {
-        let {x, y} = this.props;
-        let isStart: boolean = x == STARTPOS.x && y == STARTPOS.y;
-        let isFinish: boolean = x == FINISHPOS.x && y == FINISHPOS.y;
-        this.state = {isStart, isFinish};
-        let extraClassName: string = isStart ? "cell-start" : isFinish ? "cell-finish" : "";
+        let nodeType = this.props.nodeType;
+        let extraClassName: string;
+        switch (nodeType) {
+            case NodeType.Empty:    extraClassName = ""; break;
+            case NodeType.Start:    extraClassName = "cell-start"; break;
+            case NodeType.Finish:   extraClassName = "cell-finish"; break;
+            case NodeType.Wall:     extraClassName = "cell-wall"; break;
+        }
         return (
-            <div className={`cell ${extraClassName}`} onClick={this.handleClick} onMouseLeave={this.handleMouseLeave}/>
+            <div className={`cell ${extraClassName}`}
+                 onMouseDown    =   {(event) => this.handleMouseEvent(event)}
+                 onMouseUp      =   {(event) => this.handleMouseEvent(event)}
+                 onMouseLeave   =   {(event) => this.handleMouseEvent(event)}
+                 onMouseEnter   =   {(event) => this.handleMouseEvent(event)}
+            />
         )
     }
 }
