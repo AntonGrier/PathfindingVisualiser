@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Component} from "react";
+import {Component, createRef, RefObject} from "react";
 import Cell from "./Cell";
 import Navbar from "./Navbar";
 import PathfindingAlgorithm from "./Algorithms/PathfindingAlgorithm";
@@ -31,7 +31,7 @@ export interface Node {
     nodeType: NodeType;
 }
 export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>, startPos: Position, finishPos: Position, mouseState: MouseState, isMouseDown: boolean}> {
-    // references: Array<Array<React.RefObject<any>>>;
+    references: Array<Array<RefObject<HTMLDivElement> | any>>;
     constructor(props: any) {
         super(props);
         this.state = {
@@ -53,11 +53,11 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
             }
             grid.push(curRow);
         }
-        // this.references = grid.map((row: Array<Node>) => {
-        //    return row.map(() => {
-        //        return React.createRef();
-        //    });
-        // });
+        this.references = grid.map((row: Array<Node>) => {
+           return row.map(() => {
+               return createRef();
+           });
+        });
         this.setState({grid: grid, startPos: DEFAULTSTARTPOS, finishPos: DEFAULTFINISHPOS, mouseState: MouseState.PlacingWall, isMouseDown: false});
     }
 
@@ -156,7 +156,8 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
                     resolve();
                 } else {
                     let position: Position = visitedInOrder[posIdx];
-                    document.getElementById(`cell-${position.x}-${position.y}`).className = "cell cell-visited";
+                    let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
+                    ref.current.className = "cell cell-visited";
                     posIdx++;
                 }
             }, UPDATERATE * posIdx)
@@ -171,7 +172,8 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
                     resolve();
                 } else {
                     let position: Position = shortestPath[posIdx];
-                    document.getElementById(`cell-${position.x}-${position.y}`).className = "cell cell-shortestPath";
+                    let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
+                    ref.current.className = "cell cell-shortestPath";
                     posIdx++;
                 }
             }, UPDATERATE * posIdx)
@@ -193,7 +195,7 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
                                 isFinish={this.state.finishPos.x === colIdx && this.state.finishPos.y === rowIdx}
                                 nodeType = {cell.nodeType}
                                 updateMouseState = {(position: Position, eventType: string) => this.updateMouseState(position, eventType)}
-                                // ref = {this.references[rowIdx][colIdx]}
+                                nodeRef = {this.references[rowIdx][colIdx]}
                                 key = {colIdx}/>)
                         })}
                     </div>)

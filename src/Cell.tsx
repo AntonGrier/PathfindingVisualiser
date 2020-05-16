@@ -1,6 +1,7 @@
 import * as React from "react";
-import {Component} from "react";
+import {Component, LegacyRef} from "react";
 import {NodeType, Position} from "./Pathfinder";
+import {RefObject} from "react";
 
 export default class Cell extends Component<
     {
@@ -9,7 +10,7 @@ export default class Cell extends Component<
         isFinish: boolean,
         nodeType: NodeType,
         updateMouseState: (position: Position, eventType: string) => void,
-        // ref: React.RefObject<any>
+        nodeRef: (ref: RefObject<HTMLDivElement> | any) => void,
     },
     {}>{
     constructor(props: any) {
@@ -37,7 +38,7 @@ export default class Cell extends Component<
             }
         }
         return (
-            <div id={`cell-${this.props.position.x}-${this.props.position.y}`} className={`cell ${className}`}
+            <div ref={this.props.nodeRef} id={`cell-${this.props.position.x}-${this.props.position.y}`} className={`cell ${className}`}
                  onMouseDown    =   {(event) => this.handleMouseEvent(event)}
                  onMouseUp      =   {(event) => this.handleMouseEvent(event)}
                  onMouseEnter   =   {(event) => this.handleMouseEvent(event)}
