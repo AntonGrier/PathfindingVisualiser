@@ -2,13 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb562bf8-7e49-4392-af48-ac7a2d231c05" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Algorithms/Dijkstra.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Algorithms/DijkstraHeapV.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Algorithms/PathfindingAlgorithm.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Navbar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/main.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cell.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cell.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pathfinder.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pathfinder.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +21,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1bmVThDl2nul3cVZv1e8oo8tgez" />
@@ -29,10 +39,18 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Algorithms" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="prettierjs.PrettierConfiguration.Package" value="C:\Users\antyg\Documents\Projects\path_finder\node_modules\prettier" />
     <property name="ts.external.directory.path" value="C:\Users\antyg\Documents\Projects\path_finder\node_modules\typescript\lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\antyg\Documents\Projects\path_finder\src\Algorithms" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\antyg\Documents\Projects\path_finder\src\Algorithms" />
+    </key>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -61,20 +79,55 @@
       <workItem from="1589308629346" duration="10308000" />
       <workItem from="1589349080113" duration="4022000" />
       <workItem from="1589390478136" duration="13132000" />
+      <workItem from="1589414822082" duration="314000" />
+      <workItem from="1589478018779" duration="5045000" />
+      <workItem from="1589492226740" duration="18531000" />
+      <workItem from="1589562463362" duration="5174000" />
+      <workItem from="1589575763997" duration="13366000" />
+      <workItem from="1589650477756" duration="3314000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="WindowStateProjectService">
+    <state x="1045" y="539" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1589494145513">
+      <screen x="0" y="30" width="2560" height="1410" />
+    </state>
+    <state x="1045" y="539" key="#com.intellij.fileTypes.FileTypeChooser/0.30.2560.1410/2560.30.1920.1050@0.30.2560.1410" timestamp="1589494145513" />
+    <state x="1085" y="452" key="#com.intellij.ide.util.MemberChooser" timestamp="1589494199848">
+      <screen x="0" y="30" width="2560" height="1410" />
+    </state>
+    <state x="1085" y="452" key="#com.intellij.ide.util.MemberChooser/0.30.2560.1410/2560.30.1920.1050@0.30.2560.1410" timestamp="1589494199848" />
     <state x="921" y="461" width="700" height="530" key="recent.locations.popup" timestamp="1589315121434">
       <screen x="0" y="30" width="2560" height="1410" />
     </state>
     <state x="921" y="461" width="700" height="530" key="recent.locations.popup/0.30.2560.1410/2560.30.1920.1050@0.30.2560.1410" timestamp="1589315121434" />
+    <state x="1003" y="366" key="refactoring.ChangeSignatureDialog" timestamp="1589495403350">
+      <screen x="0" y="30" width="2560" height="1410" />
+    </state>
+    <state x="1003" y="366" key="refactoring.ChangeSignatureDialog/0.30.2560.1410/2560.30.1920.1050@0.30.2560.1410" timestamp="1589495403350" />
     <state x="936" y="348" key="run.anything.popup" timestamp="1589258974356">
       <screen x="0" y="30" width="2560" height="1410" />
     </state>
     <state x="936" y="348" key="run.anything.popup/0.30.2560.1410/2560.30.1920.1050@0.30.2560.1410" timestamp="1589258974356" />
+    <state x="936" y="388" width="670" height="676" key="search.everywhere.popup" timestamp="1589596962774">
+      <screen x="0" y="30" width="2560" height="1410" />
+    </state>
+    <state x="936" y="388" width="670" height="676" key="search.everywhere.popup/0.30.2560.1410/2560.30.1920.1050@0.30.2560.1410" timestamp="1589596962774" />
   </component>
 </project>

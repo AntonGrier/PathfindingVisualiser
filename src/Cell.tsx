@@ -1,14 +1,15 @@
 import * as React from "react";
 import {Component} from "react";
-import {FINISHPOS, MouseState, NodeType, STARTPOS} from "./Pathfinder";
-import {render} from "react-dom";
+import {NodeType, Position} from "./Pathfinder";
 
 export default class Cell extends Component<
     {
-        x: number,
-        y: number,
+        position: Position,
+        isStart: boolean,
+        isFinish: boolean,
         nodeType: NodeType,
-        updateMouseState: (x: number, y: number, eventType: string) => void
+        updateMouseState: (position: Position, eventType: string) => void,
+        // ref: React.RefObject<any>
     },
     {}>{
     constructor(props: any) {
@@ -18,23 +19,27 @@ export default class Cell extends Component<
 
     handleMouseEvent(event: React.MouseEvent<HTMLElement>): void {
         let eventType: string =  event.type;
-        this.props.updateMouseState(this.props.x, this.props.y, eventType);
+        let position: Position = this.props.position;
+        this.props.updateMouseState(position, eventType);
     }
 
     render(): any {
-        let nodeType = this.props.nodeType;
-        let extraClassName: string;
-        switch (nodeType) {
-            case NodeType.Empty:    extraClassName = ""; break;
-            case NodeType.Start:    extraClassName = "cell-start"; break;
-            case NodeType.Finish:   extraClassName = "cell-finish"; break;
-            case NodeType.Wall:     extraClassName = "cell-wall"; break;
+        let {isStart, isFinish, nodeType} = this.props;
+        let className: string;
+        if (isStart || isFinish) {
+            className = isStart ? "cell-start" : isFinish ? "cell-finish" : "";
+        } else {
+            switch (nodeType) {
+                case NodeType.Unvisited:    className = "cell-unvisited"; break;
+                case NodeType.Visited:      className = "cell-visited"; break;
+                case NodeType.Wall:         className = "cell-wall"; break;
+                case NodeType.ShortestPath: className = "cell-shortestPath"; break;
+            }
         }
         return (
-            <div className={`cell ${extraClassName}`}
+            <div id={`cell-${this.props.position.x}-${this.props.position.y}`} className={`cell ${className}`}
                  onMouseDown    =   {(event) => this.handleMouseEvent(event)}
                  onMouseUp      =   {(event) => this.handleMouseEvent(event)}
-                 onMouseLeave   =   {(event) => this.handleMouseEvent(event)}
                  onMouseEnter   =   {(event) => this.handleMouseEvent(event)}
             />
         )

@@ -8,7 +8,7 @@
 }
 
 .cell-start {
-    background-color: green;
+    background-color: limegreen;
 }
 
 .cell-finish {
@@ -19,9 +19,17 @@
     background-color: black;
 }
 
+.cell-visited {
+    background-color: deepskyblue;
+}
+
+.cell-shortestPath {
+    background-color: yellow;
+}
+
 .grid {
     border: 0.5px solid black;
-    margin-top: 10%;
+    margin-top: 10vh;
     display:inline-block;
     height: auto;
     width: auto;
@@ -36,4 +44,11 @@
     -webkit-user-select: none;
     -webkit-user-drag: none;
     cursor: default;
+}
+
+.navbar {
+    width: 100vw;
+    height: 10vh;
+    text-align: center;
+    background-color: lightblue;
 }
