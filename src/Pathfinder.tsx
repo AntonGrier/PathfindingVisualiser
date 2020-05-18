@@ -137,7 +137,7 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
     private performAlgorithm(algorithm: PathfindingAlgorithm): void {
         algorithm.calculatePath(this.state.grid, this.state.startPos, this.state.finishPos);
         let visitedInOrder: Array<Position> = algorithm.produceVisitedInOrder();
-        let shortestPath: Array<Position> = algorithm.produceShortestPath();
+        let shortestPath: Array<Position> = algorithm.produceFinalPath();
         this.visualiseAlgorithm(visitedInOrder, shortestPath);
     }
 
