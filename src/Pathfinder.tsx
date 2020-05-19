@@ -44,6 +44,11 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
     }
 
     componentDidMount(): void {
+        this.reset(DEFAULTSTARTPOS, DEFAULTFINISHPOS);
+        this.references = Array(GRIDH).fill([]).map(() => Array(GRIDW).fill(0).map(() => createRef()));
+    }
+
+    reset(startPos: Position, finishPos: Position) {
         let grid: Array<Array<Node>> = [];
         for (let row = 0; row < GRIDH; row++) {
             let curRow: Array<Node> = [];
@@ -53,12 +58,8 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
             }
             grid.push(curRow);
         }
-        this.references = grid.map((row: Array<Node>) => {
-           return row.map(() => {
-               return createRef();
-           });
-        });
-        this.setState({grid: grid, startPos: DEFAULTSTARTPOS, finishPos: DEFAULTFINISHPOS, mouseState: MouseState.PlacingWall, isMouseDown: false});
+
+        this.setState({grid: grid, startPos: startPos, finishPos: finishPos, mouseState: MouseState.PlacingWall, isMouseDown: false});
     }
 
     updateMouseState(position: Position, eventType: string): void {
@@ -157,7 +158,14 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
                 } else {
                     let position: Position = visitedInOrder[posIdx];
                     let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
-                    ref.current.className = "cell cell-visited";
+                    let className: string = ref.current.className;
+                    if (className.includes("cell-start")) {
+                        ref.current.className = "cell cell-start cell-visited"
+                    } else if (className.includes("cell-finish")) {
+                        ref.current.className = "cell cell-finish cell-visited"
+                    } else {
+                        ref.current.className = "cell cell-visited"
+                    }
                     posIdx++;
                 }
             }, UPDATERATE * posIdx)
@@ -173,7 +181,14 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
                 } else {
                     let position: Position = shortestPath[posIdx];
                     let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
-                    ref.current.className = "cell cell-shortestPath";
+                    let className: string = ref.current.className;
+                    if (className.includes("cell-start")) {
+                        ref.current.className = "cell cell-start cell-shortestPath"
+                    } else if (className.includes("cell-finish")) {
+                        ref.current.className = "cell cell-finish cell-shortestPath"
+                    } else {
+                        ref.current.className = "cell cell-shortestPath"
+                    }
                     posIdx++;
                 }
             }, UPDATERATE * posIdx)
@@ -184,7 +199,7 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
         let grid = this.state.grid;
         return (
             <div>
-            <Navbar performAlgorithm = {(algorithm: PathfindingAlgorithm) => this.performAlgorithm(algorithm)}/>
+            <Navbar performAlgorithm = {(algorithm: PathfindingAlgorithm) => this.performAlgorithm(algorithm)} reset={() => this.reset(this.state.startPos, this.state.finishPos)}/>
             <div className = "grid">
                 {grid.map((row: Array<Node>, rowIdx) => {
                     return (<div className="grid-row" key = {rowIdx}>

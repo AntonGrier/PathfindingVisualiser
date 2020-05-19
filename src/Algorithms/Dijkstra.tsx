@@ -13,13 +13,13 @@ export default class Dijkstra extends PathfindingAlgorithm {
             this.markAsVisited(closestPosition);
             if (this.equalPosition(closestPosition, finishPos)) {
                 console.log("FINISH REACHED");
-                this.findShortestPath(startPos);
+                this.findShortestPath(finishPos);
                 return;
             }
             let neighbors: Array<Position> = this.getNeighbors(grid, closestPosition);
             let closestDistance: number = this.pathValues.get(this.hash(closestPosition)).shortestPath;
             for (let neighbor of neighbors) {
-                let newDistance: number = closestDistance + 1;
+                let newDistance: number = closestDistance + 1; //this.getDistance(closestPosition, neighbor);
                 let neighborPathData: PathData = this.pathValues.get(this.hash(neighbor));
                 this.minHeap.insert(neighbor, newDistance);
                 if (newDistance < neighborPathData.shortestPath) {
@@ -33,6 +33,10 @@ export default class Dijkstra extends PathfindingAlgorithm {
             }
         }
     }
+
+    // private getDistance(pos1: Position, pos2: Position): number {
+    //     return Math.sqrt(Math.pow(pos1.x + pos2.x,2) + Math.pow(pos1.y + pos2.y,2))
+    // }
 
     protected setMap(grid: Array<Array<Node>>, startPos: Position): void {
         grid.forEach((row) => {
