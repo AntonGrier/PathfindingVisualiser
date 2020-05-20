@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bb562bf8-7e49-4392-af48-ac7a2d231c05" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Algorithms/AStar.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Algorithms/DataStructures/MinHeap.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/main.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Algorithms/DFS.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Algorithms/DFS.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Algorithms/Dijkstra.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Algorithms/Dijkstra.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Algorithms/PathfindingAlgorithm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Algorithms/PathfindingAlgorithm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Navbar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pathfinder.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pathfinder.tsx" afterDir="false" />
     </list>
@@ -38,7 +39,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Algorithms" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="prettierjs.PrettierConfiguration.Package" value="C:\Users\antyg\Documents\Projects\path_finder\node_modules\prettier" />
-    <property name="ts.external.directory.path" value="C:\Users\antyg\Documents\Projects\path_finder\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="C:\Users\Anton\Documents\Pathfinder\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">

@@ -1,4 +1,4 @@
-import {Node, NodeType, Position} from "../Pathfinder";
+import {GRID_H, GRID_W, Node, NodeType, Position} from "../Pathfinder";
 
 export interface PathData {
     isVisited: boolean,
@@ -26,24 +26,30 @@ export default abstract class PathfindingAlgorithm {
     protected getNeighbors(grid: Array<Array<Node>>, position: Position): Array<Position> {
         let neighbors: Array<Position> = [];
 
-        if (position.x > 0) {
-            neighbors.push({x: position.x - 1, y: position.y});
-        }
-        if (position.y < grid.length - 1) {
-            neighbors.push({x: position.x, y: position.y + 1});
-        }
-        if (position.x < grid[0].length - 1) {
-            neighbors.push({x: position.x + 1, y: position.y});
-        }
-        if (position.y > 0) {
-            neighbors.push({x: position.x, y: position.y - 1});
-        }
-        return neighbors.filter((pos) => {
+
+
+        neighbors.push({x: position.x + 1, y: position.y});
+        neighbors.push({x: position.x, y: position.y + 1});
+        neighbors.push({x: position.x, y: position.y - 1});
+        neighbors.push({x: position.x - 1, y: position.y});
+
+        neighbors.push({x: position.x - 1, y: position.y + 1});
+        neighbors.push({x: position.x + 1, y: position.y + 1});
+        neighbors.push({x: position.x + 1, y: position.y - 1});
+        neighbors.push({x: position.x - 1, y: position.y - 1});
+
+        return neighbors.filter((neighbor) => {
             return (
-                grid[pos.y][pos.x].nodeType !== NodeType.Wall
-                && !this.isVisited(pos)
+                neighbor.x >= 0 && neighbor.x < GRID_W &&
+                neighbor.y >= 0 && neighbor.y < GRID_H &&
+                grid[neighbor.y][neighbor.x].nodeType !== NodeType.Wall &&
+                !this.isVisited(neighbor) && this.cornerCheck(position, neighbor, grid)
             );
         });
+    }
+
+    private cornerCheck(position: Position, neighbor: Position, grid: Array<Array<Node>>): boolean {
+        return grid[position.y][neighbor.x].nodeType !== NodeType.Wall || grid[neighbor.y][position.x].nodeType !== NodeType.Wall
     }
 
     protected isVisited(position: Position): boolean {

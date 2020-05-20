@@ -1,5 +1,6 @@
 .cell {
     background-color: white;
+    border-color: rgba(0,0,0,0.85);
     width: 25px;
     height: 25px;
     display: inline-block;
@@ -16,7 +17,12 @@
 }
 
 .cell-wall {
+    width: 25px;
+    height: 25px;
     background-color: black;
+    animation-name: wall;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
 }
 
 .cell-visited {
@@ -28,12 +34,12 @@
 }
 
 .grid {
-    border: 0.5px solid black;
+    border: 0.5px solid #36454F;
     margin-top: 10vh;
     display:inline-block;
     height: auto;
     width: auto;
-    background-color: black;
+    background-color: #36454F;
 }
 
 .app {
@@ -51,4 +57,11 @@
     height: 10vh;
     text-align: center;
     background-color: lightblue;
+}
+
+@keyframes wall {
+    0% {transform: scale(2); }
+    /*50% {transform: scale(); }*/
+    75% {transform: scale(1); }
+    /*100% {transform: scale(1); }*/
 }

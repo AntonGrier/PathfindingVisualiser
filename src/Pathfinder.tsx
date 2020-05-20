@@ -3,12 +3,13 @@ import {Component, createRef, RefObject} from "react";
 import Cell from "./Cell";
 import Navbar from "./Navbar";
 import PathfindingAlgorithm from "./Algorithms/PathfindingAlgorithm";
+import {render} from "react-dom";
 
-export const GRIDW = 50;
-export const GRIDH = 27;
-const DEFAULTSTARTPOS: Position = {x: Math.floor(GRIDW/4), y: Math.floor(GRIDH/2)};
-const DEFAULTFINISHPOS: Position = {x: GRIDW - DEFAULTSTARTPOS.x, y: DEFAULTSTARTPOS.y};
-const UPDATERATE = 15;
+export const GRID_W = 50;
+export const GRID_H = 27;
+const DEFAULT_START_POS: Position = {x: Math.floor(GRID_W/4), y: Math.floor(GRID_H/2)};
+const DEFAULT_FINISH_POS: Position = {x: GRID_W - DEFAULT_START_POS.x, y: DEFAULT_START_POS.y};
+const UPDATE_RATE = 5;
 
 export interface Position {
     x: number,
@@ -19,6 +20,8 @@ export enum MouseState {
     RemovingWall,
     MovingStart,
     MovingFinish,
+    Recalculating,
+    Disabled,
 }
 export enum NodeType {
     Unvisited,
@@ -30,7 +33,8 @@ export interface Node {
     position : Position,
     nodeType: NodeType;
 }
-export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>, startPos: Position, finishPos: Position, mouseState: MouseState, isMouseDown: boolean}> {
+
+export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>, startPos: Position, finishPos: Position, mouseState: MouseState, isMouseDown: boolean, updateLock: boolean, prevAlgorithm: PathfindingAlgorithm}> {
     references: Array<Array<RefObject<HTMLDivElement> | any>>;
     constructor(props: any) {
         super(props);
@@ -40,29 +44,44 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
             finishPos: null,
             mouseState: null,
             isMouseDown: false,
+            updateLock: false,
+            prevAlgorithm: null,
         };
     }
 
     componentDidMount(): void {
-        this.reset(DEFAULTSTARTPOS, DEFAULTFINISHPOS);
-        this.references = Array(GRIDH).fill([]).map(() => Array(GRIDW).fill(0).map(() => createRef()));
-    }
-
-    reset(startPos: Position, finishPos: Position) {
         let grid: Array<Array<Node>> = [];
-        for (let row = 0; row < GRIDH; row++) {
+        for (let row = 0; row < GRID_H; row++) {
             let curRow: Array<Node> = [];
-            for (let col = 0; col < GRIDW; col++) {
+            for (let col = 0; col < GRID_W; col++) {
                 let newNode: Node = {position: {x: col, y: row}, nodeType: NodeType.Unvisited};
                 curRow.push(newNode);
             }
             grid.push(curRow);
         }
+        this.setState({grid: grid, startPos: DEFAULT_START_POS, finishPos: DEFAULT_FINISH_POS, mouseState: MouseState.PlacingWall, isMouseDown: false});
+        this.references = Array(GRID_H).fill([]).map(() => Array(GRID_W).fill(0).map(() => createRef()));
+    }
 
-        this.setState({grid: grid, startPos: startPos, finishPos: finishPos, mouseState: MouseState.PlacingWall, isMouseDown: false});
+    shouldComponentUpdate(nextProps: Readonly<{}>, nextState: Readonly<{ grid: Array<Array<Node>>; startPos: Position; finishPos: Position; mouseState: MouseState; isMouseDown: boolean; updateLock: boolean }>, nextContext: any): boolean {
+        return !nextState.updateLock;
+    }
+
+    clearPath(): void {
+        let grid: Array<Array<Node>> = this.state.grid;
+        grid = grid.map((row) => {
+            return row.map((node) => {
+                return ({
+                        ...node,
+                        nodeType: node.nodeType === NodeType.Wall? NodeType.Wall : NodeType.Unvisited,
+                })
+            });
+        });
+        this.setState({grid: grid});
     }
 
     updateMouseState(position: Position, eventType: string): void {
+        if (this.state.mouseState === MouseState.Disabled) return;
         switch (eventType) {
             case "mousedown": {
                 this.onMouseDown(position);
@@ -84,7 +103,9 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
         let nodeType: NodeType = grid[position.y][position.x].nodeType;
         if ((mouseState === MouseState.MovingStart && this.isFinish(position)) || (mouseState === MouseState.MovingFinish && this.isStart(position))) return;
 
-        mouseState = this.isStart(position) ? MouseState.MovingStart : this.isFinish(position) ? MouseState.MovingFinish : nodeType === NodeType.Unvisited ? MouseState.PlacingWall : MouseState.RemovingWall;
+        if (mouseState !== MouseState.Recalculating) {
+            mouseState = this.isStart(position) ? MouseState.MovingStart : this.isFinish(position) ? MouseState.MovingFinish : nodeType === NodeType.Unvisited ? MouseState.PlacingWall : MouseState.RemovingWall;
+        }
 
         if (!this.isStart(position) && !this.isFinish(position)) {
             if (nodeType === NodeType.Wall) {
@@ -98,14 +119,14 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
     }
 
     private onMouseUp() {
-        let mouseState = MouseState.PlacingWall;
+        let mouseState =  this.state.mouseState === MouseState.Recalculating ? MouseState.Recalculating : MouseState.PlacingWall;
         let isMouseDown = false;
         this.setState({mouseState: mouseState, isMouseDown: isMouseDown});
     }
 
     private onMouseEnter(position: Position) {
         let {grid, startPos, finishPos, mouseState, isMouseDown} = this.state;
-        if (!isMouseDown || this.isStart(position) || this.isFinish(position)) return;
+        if (!isMouseDown || mouseState !== MouseState.Recalculating && (this.isStart(position) || this.isFinish(position))) return;
 
         switch (mouseState) {
             case MouseState.MovingStart:
@@ -124,6 +145,24 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
                 grid[position.y][position.x].nodeType = NodeType.Unvisited;
                 this.setState({grid: grid});
                 break;
+            case MouseState.Recalculating:
+                // if (this.isStart(position)) {
+                //     startPos = position;
+                // } else if (this.isFinish(position)) {
+                //     finishPos = position;
+                // }
+                startPos = position;
+                this.clearPath();
+                this.state.prevAlgorithm.calculatePath(grid, startPos, finishPos);
+                let visitedInOrder = this.state.prevAlgorithm.produceVisitedInOrder();
+                let finalPath = this.state.prevAlgorithm.produceFinalPath();
+                visitedInOrder.forEach((position) => {
+                    grid[position.y][position.x].nodeType = NodeType.Visited;
+                });
+                finalPath.forEach((position) => {
+                    grid[position.y][position.x].nodeType = NodeType.ShortestPath;
+                });
+                this.setState({grid: grid, startPos: startPos, finishPos: finishPos});
         }
     }
 
@@ -136,6 +175,7 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
     }
 
     private performAlgorithm(algorithm: PathfindingAlgorithm): void {
+        this.setState({prevAlgorithm: algorithm, mouseState: MouseState.Disabled});
         algorithm.calculatePath(this.state.grid, this.state.startPos, this.state.finishPos);
         let visitedInOrder: Array<Position> = algorithm.produceVisitedInOrder();
         let shortestPath: Array<Position> = algorithm.produceFinalPath();
@@ -144,62 +184,91 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
 
     private visualiseAlgorithm(visitedInOrder: Array<Position>, shortestPath: Array<Position>): void {
         (async () => {
+            this.lockRender();
             await this.visualiseVisited(visitedInOrder);
             await this.visualisePath(shortestPath);
+            this.unlockRender();
+            this.setState({mouseState: MouseState.Recalculating});
         })();
     }
 
     private visualiseVisited(visitedInOrder: Array<Position>): Promise<void> {
-        return new Promise(resolve => {
-            let posIdx: number = 0;
-            setInterval(() => {
-                if (posIdx === visitedInOrder.length) {
-                    resolve();
-                } else {
-                    let position: Position = visitedInOrder[posIdx];
-                    let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
-                    let className: string = ref.current.className;
-                    if (className.includes("cell-start")) {
-                        ref.current.className = "cell cell-start cell-visited"
-                    } else if (className.includes("cell-finish")) {
-                        ref.current.className = "cell cell-finish cell-visited"
+        // let position: Position = visitedInOrder[count];
+        // let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
+        // let className: string = ref.current.className;
+        // if (!className.includes("cell-start") && !className.includes("cell-finish")) {
+        //     ref.current.className = "cell cell-visited";
+        //     let grid: Array<Array<Node>> = this.state.grid;
+        //     grid[position.y][position.x].nodeType = NodeType.ShortestPath;
+        //     this.setState({grid: grid});
+        // }
+
+        return new Promise<void>(resolve => {
+            for (let i = 0; i <= visitedInOrder.length; i++) {
+                setTimeout(() => {
+                    if (i === visitedInOrder.length) {
+                        resolve();
                     } else {
-                        ref.current.className = "cell cell-visited"
+                        let position: Position = visitedInOrder[i];
+                        let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
+                        let className: string = ref.current.className;
+                        if (!className.includes("cell-start") && !className.includes("cell-finish")) {
+                            ref.current.className = "cell cell-visited";
+                            let grid: Array<Array<Node>> = this.state.grid;
+                            grid[position.y][position.x].nodeType = NodeType.Visited;
+                            this.setState({grid: grid});
+                        }
                     }
-                    posIdx++;
-                }
-            }, UPDATERATE * posIdx)
+                }, UPDATE_RATE * i);
+            }
         });
     }
 
     private visualisePath(shortestPath: Array<Position>): Promise<void> {
-        return new Promise(resolve => {
-            let posIdx: number = 0;
-            setInterval(() => {
-                if (posIdx === shortestPath.length) {
-                    resolve();
-                } else {
-                    let position: Position = shortestPath[posIdx];
-                    let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
-                    let className: string = ref.current.className;
-                    if (className.includes("cell-start")) {
-                        ref.current.className = "cell cell-start cell-shortestPath"
-                    } else if (className.includes("cell-finish")) {
-                        ref.current.className = "cell cell-finish cell-shortestPath"
+        // let position: Position = shortestPath[count];
+        // let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
+        // let className: string = ref.current.className;
+        // if (!className.includes("cell-start") && !className.includes("cell-finish")) {
+        //     ref.current.className = "cell cell-shortestPath";
+        //     let grid: Array<Array<Node>> = this.state.grid;
+        //     grid[position.y][position.x].nodeType = NodeType.ShortestPath;
+        //     this.setState({grid: grid});
+        // }
+
+        return new Promise<void>(resolve => {
+            for (let i = 0; i <= shortestPath.length; i++) {
+                setTimeout(() => {
+                    if (i === shortestPath.length) {
+                        resolve();
                     } else {
-                        ref.current.className = "cell cell-shortestPath"
+                        let position: Position = shortestPath[i];
+                        let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
+                        let className: string = ref.current.className;
+                        if (!className.includes("cell-start") && !className.includes("cell-finish")) {
+                            ref.current.className = "cell cell-shortestPath";
+                            let grid: Array<Array<Node>> = this.state.grid;
+                            grid[position.y][position.x].nodeType = NodeType.ShortestPath;
+                            this.setState({grid: grid});
+                        }
                     }
-                    posIdx++;
-                }
-            }, UPDATERATE * posIdx)
+                }, UPDATE_RATE * i);
+            }
         });
+    }
+
+    private lockRender() {
+        this.setState({updateLock: true});
+    }
+
+    private unlockRender() {
+        this.setState({updateLock: false});
     }
 
     public render(): any {
         let grid = this.state.grid;
         return (
             <div>
-            <Navbar performAlgorithm = {(algorithm: PathfindingAlgorithm) => this.performAlgorithm(algorithm)} reset={() => this.reset(this.state.startPos, this.state.finishPos)}/>
+            <Navbar performAlgorithm = {(algorithm: PathfindingAlgorithm) => this.performAlgorithm(algorithm)} clearPath={() => this.clearPath()}/>
             <div className = "grid">
                 {grid.map((row: Array<Node>, rowIdx) => {
                     return (<div className="grid-row" key = {rowIdx}>

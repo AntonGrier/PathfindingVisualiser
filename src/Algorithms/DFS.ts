@@ -14,7 +14,7 @@ export default class DFS extends PathfindingAlgorithm {
                 this.finalPath = this.visitedNodesInOrder;
                 return;
             }
-            let neighbors: Array<Position> = this.getNeighbors(grid, curPosition);
+            let neighbors: Array<Position> = this.getNeighbors(grid, curPosition).reverse();
             for (let neighbor of neighbors) {
                 this.stack.push(neighbor);
             }
