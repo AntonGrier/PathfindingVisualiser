@@ -20,7 +20,6 @@ export enum MouseState {
     RemovingWall,
     MovingStart,
     MovingFinish,
-    Recalculating,
     Disabled,
 }
 export enum NodeType {
@@ -99,15 +98,17 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
     }
 
     private onMouseDown(position: Position) {
-        let {grid, mouseState, isMouseDown} = this.state;
+        let {grid, mouseState, isMouseDown, prevAlgorithm} = this.state;
         let nodeType: NodeType = grid[position.y][position.x].nodeType;
         if ((mouseState === MouseState.MovingStart && this.isFinish(position)) || (mouseState === MouseState.MovingFinish && this.isStart(position))) return;
 
-        if (mouseState !== MouseState.Recalculating) {
-            mouseState = this.isStart(position) ? MouseState.MovingStart : this.isFinish(position) ? MouseState.MovingFinish : nodeType === NodeType.Unvisited ? MouseState.PlacingWall : MouseState.RemovingWall;
-        }
+        mouseState = this.isStart(position) ? MouseState.MovingStart : this.isFinish(position) ? MouseState.MovingFinish : nodeType === NodeType.Unvisited ? MouseState.PlacingWall : MouseState.RemovingWall;
 
         if (!this.isStart(position) && !this.isFinish(position)) {
+            if (prevAlgorithm !== null) {
+                this.clearPath();
+                prevAlgorithm = null;
+            }
             if (nodeType === NodeType.Wall) {
                 grid[position.y][position.x].nodeType = NodeType.Unvisited;
             } else {
@@ -115,27 +116,35 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
             }
         }
         isMouseDown = true;
-        this.setState({grid: grid, mouseState: mouseState, isMouseDown: isMouseDown});
+        this.setState({grid: grid, mouseState: mouseState, isMouseDown: isMouseDown, prevAlgorithm: prevAlgorithm});
     }
 
     private onMouseUp() {
-        let mouseState =  this.state.mouseState === MouseState.Recalculating ? MouseState.Recalculating : MouseState.PlacingWall;
+        let mouseState =  MouseState.PlacingWall;
         let isMouseDown = false;
         this.setState({mouseState: mouseState, isMouseDown: isMouseDown});
     }
 
     private onMouseEnter(position: Position) {
-        let {grid, startPos, finishPos, mouseState, isMouseDown} = this.state;
-        if (!isMouseDown || mouseState !== MouseState.Recalculating && (this.isStart(position) || this.isFinish(position))) return;
+        let {grid, startPos, finishPos, mouseState, isMouseDown, prevAlgorithm} = this.state;
+        if (!isMouseDown || this.isStart(position) || this.isFinish(position)) return;
 
         switch (mouseState) {
             case MouseState.MovingStart:
                 startPos = position;
-                this.setState({startPos: startPos});
+                if (prevAlgorithm !== null) {
+                    this.recalculatePath(startPos, finishPos, prevAlgorithm);
+                } else {
+                    this.setState({startPos: startPos});
+                }
                 break;
             case MouseState.MovingFinish:
                 finishPos = position;
-                this.setState({finishPos: finishPos});
+                if (prevAlgorithm !== null) {
+                    this.recalculatePath(startPos, finishPos, prevAlgorithm);
+                } else {
+                    this.setState({finishPos: finishPos});
+                }
                 break;
             case MouseState.PlacingWall:
                 grid[position.y][position.x].nodeType = NodeType.Wall;
@@ -145,25 +154,22 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
                 grid[position.y][position.x].nodeType = NodeType.Unvisited;
                 this.setState({grid: grid});
                 break;
-            case MouseState.Recalculating:
-                // if (this.isStart(position)) {
-                //     startPos = position;
-                // } else if (this.isFinish(position)) {
-                //     finishPos = position;
-                // }
-                startPos = position;
-                this.clearPath();
-                this.state.prevAlgorithm.calculatePath(grid, startPos, finishPos);
-                let visitedInOrder = this.state.prevAlgorithm.produceVisitedInOrder();
-                let finalPath = this.state.prevAlgorithm.produceFinalPath();
-                visitedInOrder.forEach((position) => {
-                    grid[position.y][position.x].nodeType = NodeType.Visited;
-                });
-                finalPath.forEach((position) => {
-                    grid[position.y][position.x].nodeType = NodeType.ShortestPath;
-                });
-                this.setState({grid: grid, startPos: startPos, finishPos: finishPos});
         }
+    }
+
+    private recalculatePath(startPos: Position, finishPos: Position, prevAlgorithm: PathfindingAlgorithm) {
+        this.clearPath();
+        let grid: Array<Array<Node>> = this.state.grid;
+        prevAlgorithm.calculatePath(grid, startPos, finishPos);
+        let visitedInOrder = prevAlgorithm.produceVisitedInOrder();
+        let finalPath = prevAlgorithm.produceFinalPath();
+        visitedInOrder.forEach((position) => {
+            grid[position.y][position.x].nodeType = NodeType.Visited;
+        });
+        finalPath.forEach((position) => {
+            grid[position.y][position.x].nodeType = NodeType.ShortestPath;
+        });
+        this.setState({grid: grid, startPos: startPos, finishPos: finishPos, prevAlgorithm: prevAlgorithm});
     }
 
     private isStart(position: Position) {
@@ -188,7 +194,7 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
             await this.visualiseVisited(visitedInOrder);
             await this.visualisePath(shortestPath);
             this.unlockRender();
-            this.setState({mouseState: MouseState.Recalculating});
+            this.setState({mouseState: MouseState.PlacingWall});
         })();
     }
 
