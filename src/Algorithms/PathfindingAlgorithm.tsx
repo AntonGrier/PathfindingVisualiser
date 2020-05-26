@@ -15,19 +15,18 @@ export default abstract class PathfindingAlgorithm {
 
     public abstract calculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void;
 
+    public abstract recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void;
+
     public produceVisitedInOrder(): Array<Position> {
-        return this.visitedNodesInOrder;
+        return this.visitedNodesInOrder.slice(1, this.visitedNodesInOrder.length - 1);
     }
 
     public produceFinalPath() : Array<Position> {
-        return this.finalPath;
+        return this.finalPath.slice(1, this.visitedNodesInOrder.length - 1);
     }
 
     protected getNeighbors(grid: Array<Array<Node>>, position: Position): Array<Position> {
         let neighbors: Array<Position> = [];
-
-
-
         neighbors.push({x: position.x + 1, y: position.y});
         neighbors.push({x: position.x, y: position.y + 1});
         neighbors.push({x: position.x, y: position.y - 1});
@@ -73,5 +72,11 @@ export default abstract class PathfindingAlgorithm {
 
     protected hash(position: Position): string {
         return position.x.toString() + "-" + position.y.toString();
+    }
+
+    protected clear(): void {
+        this.visitedNodesInOrder = [];
+        this.finalPath = [];
+        this.pathValues = new Map<string, PathData>();
     }
 }

@@ -9,10 +9,8 @@ export default class Dijkstra extends PathfindingAlgorithm {
         this.minHeap.insert(startPos, 0);
         while (this.minHeap.size() !== 0) {
             let closestPosition: Position = this.minHeap.pop();
-            console.log(closestPosition);
             this.markAsVisited(closestPosition);
             if (this.equalPosition(closestPosition, finishPos)) {
-                console.log("FINISH REACHED");
                 this.findShortestPath(finishPos);
                 return;
             }
@@ -32,6 +30,12 @@ export default class Dijkstra extends PathfindingAlgorithm {
                 }
             }
         }
+    }
+
+    public recalculatePath(grid: Node[][], startPos: Position, finishPos: Position): void {
+        this.clear();
+        this.minHeap = new PriorityQueue<Position>();
+        this.calculatePath(grid, startPos, finishPos);
     }
 
     private getDistance(pos1: Position, pos2: Position): number {

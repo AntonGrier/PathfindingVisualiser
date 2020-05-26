@@ -10,7 +10,6 @@ export default class BFS extends PathfindingAlgorithm {
         this.queue.push(startPos);
         while (!this.queue.isEmpty()) {
             let curPosition: Position = this.queue.pop();
-            console.log(curPosition);
             this.markAsVisited(curPosition);
             if (this.equalPosition(curPosition, finishPos)) {
                 this.findShortestPath(finishPos);
@@ -44,5 +43,11 @@ export default class BFS extends PathfindingAlgorithm {
         ) {
             this.finalPath.unshift(curPosition);
         }
+    }
+
+    recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
+        this.clear();
+        this.queue = new Queue<Position>();
+        this.calculatePath(grid, startPos, finishPos);
     }
 }

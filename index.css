@@ -17,11 +17,11 @@
 }
 
 .cell-wall {
+    background-color: black;
     width: 25px;
     height: 25px;
-    background-color: black;
     animation-name: wall;
-    animation-duration: 0.5s;
+    animation-duration: 0.4s;
     animation-fill-mode: forwards;
 }
 
@@ -60,8 +60,8 @@
 }
 
 @keyframes wall {
-    0% {transform: scale(2); }
+    0% {transform: scale(1.5); }
     /*50% {transform: scale(); }*/
-    75% {transform: scale(1); }
-    /*100% {transform: scale(1); }*/
+    75% {transform: scale(0.8); }
+    100% {transform: scale(1); }
 }

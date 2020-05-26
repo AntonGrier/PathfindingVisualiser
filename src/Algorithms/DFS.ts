@@ -29,4 +29,10 @@ export default class DFS extends PathfindingAlgorithm {
             });
         });
     }
+
+    recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
+        this.clear();
+        this.stack = new Stack<Position>();
+        this.calculatePath(grid, startPos, finishPos);
+    }
 }

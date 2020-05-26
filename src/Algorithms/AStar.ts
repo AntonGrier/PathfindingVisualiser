@@ -27,4 +27,7 @@ export default class AStart extends PathfindingAlgorithm {
     private getDistanceFromFinish(position: Position, finishPos: Position): number {
         return Math.abs(position.x - finishPos.x) + Math.abs(position.y - finishPos.y);
     }
+
+    recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
+    }
 }

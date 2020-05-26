@@ -3,7 +3,6 @@ import {Component, createRef, RefObject} from "react";
 import Cell from "./Cell";
 import Navbar from "./Navbar";
 import PathfindingAlgorithm from "./Algorithms/PathfindingAlgorithm";
-import {render} from "react-dom";
 
 export const GRID_W = 50;
 export const GRID_H = 27;
@@ -66,17 +65,17 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
         return !nextState.updateLock;
     }
 
-    clearPath(): void {
+    clearPath(): Array<Array<Node>> {
         let grid: Array<Array<Node>> = this.state.grid;
         grid = grid.map((row) => {
             return row.map((node) => {
                 return ({
-                        ...node,
-                        nodeType: node.nodeType === NodeType.Wall? NodeType.Wall : NodeType.Unvisited,
+                    position: node.position,
+                    nodeType: node.nodeType === NodeType.Wall? NodeType.Wall : NodeType.Unvisited,
                 })
             });
         });
-        this.setState({grid: grid});
+        return grid;
     }
 
     updateMouseState(position: Position, eventType: string): void {
@@ -106,7 +105,7 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
 
         if (!this.isStart(position) && !this.isFinish(position)) {
             if (prevAlgorithm !== null) {
-                this.clearPath();
+                grid = this.clearPath();
                 prevAlgorithm = null;
             }
             if (nodeType === NodeType.Wall) {
@@ -158,18 +157,17 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
     }
 
     private recalculatePath(startPos: Position, finishPos: Position, prevAlgorithm: PathfindingAlgorithm) {
-        this.clearPath();
-        let grid: Array<Array<Node>> = this.state.grid;
-        prevAlgorithm.calculatePath(grid, startPos, finishPos);
+        let grid: Array<Array<Node>> = this.clearPath();
+        prevAlgorithm.recalculatePath(grid, startPos, finishPos);
         let visitedInOrder = prevAlgorithm.produceVisitedInOrder();
         let finalPath = prevAlgorithm.produceFinalPath();
-        visitedInOrder.forEach((position) => {
+        for (let position of visitedInOrder) {
             grid[position.y][position.x].nodeType = NodeType.Visited;
-        });
-        finalPath.forEach((position) => {
+        }
+        for (let position of finalPath) {
             grid[position.y][position.x].nodeType = NodeType.ShortestPath;
-        });
-        this.setState({grid: grid, startPos: startPos, finishPos: finishPos, prevAlgorithm: prevAlgorithm});
+        }
+        this.setState({grid: grid, startPos: startPos, finishPos: finishPos});
     }
 
     private isStart(position: Position) {
@@ -199,16 +197,6 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
     }
 
     private visualiseVisited(visitedInOrder: Array<Position>): Promise<void> {
-        // let position: Position = visitedInOrder[count];
-        // let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
-        // let className: string = ref.current.className;
-        // if (!className.includes("cell-start") && !className.includes("cell-finish")) {
-        //     ref.current.className = "cell cell-visited";
-        //     let grid: Array<Array<Node>> = this.state.grid;
-        //     grid[position.y][position.x].nodeType = NodeType.ShortestPath;
-        //     this.setState({grid: grid});
-        // }
-
         return new Promise<void>(resolve => {
             for (let i = 0; i <= visitedInOrder.length; i++) {
                 setTimeout(() => {
@@ -231,16 +219,6 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
     }
 
     private visualisePath(shortestPath: Array<Position>): Promise<void> {
-        // let position: Position = shortestPath[count];
-        // let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
-        // let className: string = ref.current.className;
-        // if (!className.includes("cell-start") && !className.includes("cell-finish")) {
-        //     ref.current.className = "cell cell-shortestPath";
-        //     let grid: Array<Array<Node>> = this.state.grid;
-        //     grid[position.y][position.x].nodeType = NodeType.ShortestPath;
-        //     this.setState({grid: grid});
-        // }
-
         return new Promise<void>(resolve => {
             for (let i = 0; i <= shortestPath.length; i++) {
                 setTimeout(() => {
@@ -274,7 +252,7 @@ export default class Pathfinder extends Component<{}, {grid: Array<Array<Node>>,
         let grid = this.state.grid;
         return (
             <div>
-            <Navbar performAlgorithm = {(algorithm: PathfindingAlgorithm) => this.performAlgorithm(algorithm)} clearPath={() => this.clearPath()}/>
+            <Navbar performAlgorithm = {(algorithm: PathfindingAlgorithm) => this.performAlgorithm(algorithm)} clearPath={() => this.setState({prevAlgorithm: null, grid: this.clearPath()})}/>
             <div className = "grid">
                 {grid.map((row: Array<Node>, rowIdx) => {
                     return (<div className="grid-row" key = {rowIdx}>
