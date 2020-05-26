@@ -1,6 +1,6 @@
-import PathfindingAlgorithm from "./PathfindingAlgorithm";
-import Stack from "./DataStructures/Stack";
-import {Position, Node} from "../Pathfinder";
+import PathfindingAlgorithm from './PathfindingAlgorithm';
+import Stack from './DataStructures/Stack';
+import { Position, Node } from '../Pathfinder';
 
 export default class DFS extends PathfindingAlgorithm {
     stack: Stack<Position> = new Stack<Position>();
@@ -25,7 +25,7 @@ export default class DFS extends PathfindingAlgorithm {
         grid.forEach((row) => {
             row.forEach((node) => {
                 let nodePosition: Position = node.position;
-                this.pathValues.set(this.hash(nodePosition), {isVisited: false});
+                this.pathValues.set(this.hash(nodePosition), { isVisited: false });
             });
         });
     }

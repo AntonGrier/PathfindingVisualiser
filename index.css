@@ -1,6 +1,6 @@
 .cell {
     background-color: white;
-    border-color: rgba(0,0,0,0.85);
+    border-color: rgba(0, 0, 0, 0.85);
     width: 25px;
     height: 25px;
     display: inline-block;
@@ -34,19 +34,21 @@
 }
 
 .grid {
-    border: 0.5px solid #36454F;
+    border: 0.5px solid #36454f;
     margin-top: 10vh;
-    display:inline-block;
+    display: inline-block;
     height: auto;
     width: auto;
-    background-color: #36454F;
+    background-color: #36454f;
 }
 
 .app {
     text-align: center;
 }
 
-*, *::after, *::before {
+*,
+*::after,
+*::before {
     -webkit-user-select: none;
     -webkit-user-drag: none;
     cursor: default;
@@ -60,8 +62,14 @@
 }
 
 @keyframes wall {
-    0% {transform: scale(1.5); }
+    0% {
+        transform: scale(1.5);
+    }
     /*50% {transform: scale(); }*/
-    75% {transform: scale(0.8); }
-    100% {transform: scale(1); }
+    75% {
+        transform: scale(0.8);
+    }
+    100% {
+        transform: scale(1);
+    }
 }

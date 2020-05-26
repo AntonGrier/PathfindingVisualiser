@@ -1,6 +1,6 @@
-import PathfindingAlgorithm, {PathData} from "./PathfindingAlgorithm";
-import {PriorityQueue} from "./DataStructures/PriorityQueue";
-import {Position, Node} from "../Pathfinder";
+import PathfindingAlgorithm, { PathData } from './PathfindingAlgorithm';
+import { PriorityQueue } from './DataStructures/PriorityQueue';
+import { Position, Node } from '../Pathfinder';
 
 export default class AStart extends PathfindingAlgorithm {
     minHeap: PriorityQueue<Position> = new PriorityQueue<Position>();
@@ -10,7 +10,6 @@ export default class AStart extends PathfindingAlgorithm {
             let curPosition: Position = this.minHeap.pop();
             this.markAsVisited(curPosition);
             if (this.equalPosition(curPosition, finishPos)) {
-
             }
             let neighbors = this.getNeighbors(grid, curPosition);
         }
@@ -19,7 +18,7 @@ export default class AStart extends PathfindingAlgorithm {
     protected setMap(grid: Array<Array<Node>>, startPos?: Position): void {
         grid.forEach((row) => {
             row.forEach((node) => {
-                let pathData: PathData = {isVisited: false, previousNode: null}
+                let pathData: PathData = { isVisited: false, previousNode: null };
             });
         });
     }
@@ -28,6 +27,5 @@ export default class AStart extends PathfindingAlgorithm {
         return Math.abs(position.x - finishPos.x) + Math.abs(position.y - finishPos.y);
     }
 
-    recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
-    }
+    recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {}
 }

@@ -1,7 +1,6 @@
-import * as React from "react";
-import Pathfinder from "../Pathfinder";
-import {Component} from "react";
-
+import * as React from 'react';
+import Pathfinder from '../Pathfinder';
+import { Component } from 'react';
 
 export default class App extends Component {
     constructor(props: any) {
@@ -10,8 +9,10 @@ export default class App extends Component {
     }
 
     render(): any {
-        return (<div className="app">
-            <Pathfinder/>
-        </div>);
+        return (
+            <div className="app">
+                <Pathfinder />
+            </div>
+        );
     }
 }

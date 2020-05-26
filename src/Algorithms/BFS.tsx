@@ -1,6 +1,6 @@
-import PathfindingAlgorithm, {PathData} from "./PathfindingAlgorithm";
-import Queue from "./DataStructures/Queue";
-import {Node, Position} from "../Pathfinder";
+import PathfindingAlgorithm, { PathData } from './PathfindingAlgorithm';
+import Queue from './DataStructures/Queue';
+import { Node, Position } from '../Pathfinder';
 
 export default class BFS extends PathfindingAlgorithm {
     queue: Queue<Position> = new Queue<Position>();
@@ -18,7 +18,7 @@ export default class BFS extends PathfindingAlgorithm {
             let neighbors: Array<Position> = this.getNeighbors(grid, curPosition);
             for (let neighbor of neighbors) {
                 this.queue.push(neighbor);
-                this.pathValues.set(this.hash(neighbor), {isVisited: true, previousNode: curPosition});
+                this.pathValues.set(this.hash(neighbor), { isVisited: true, previousNode: curPosition });
             }
         }
     }
@@ -29,7 +29,7 @@ export default class BFS extends PathfindingAlgorithm {
                 let nodePosition: Position = node.position;
                 let pathData: PathData = {
                     isVisited: false,
-                    previousNode: null
+                    previousNode: null,
                 };
                 this.pathValues.set(this.hash(nodePosition), pathData);
             });
@@ -37,9 +37,10 @@ export default class BFS extends PathfindingAlgorithm {
     }
 
     private findShortestPath(finishPos: Position) {
-        for (let curPosition = finishPos;
-             curPosition != null;
-             curPosition = this.pathValues.get(this.hash(curPosition)).previousNode
+        for (
+            let curPosition = finishPos;
+            curPosition != null;
+            curPosition = this.pathValues.get(this.hash(curPosition)).previousNode
         ) {
             this.finalPath.unshift(curPosition);
         }

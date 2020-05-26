@@ -1,6 +1,6 @@
-import PathfindingAlgorithm, {PathData} from "./PathfindingAlgorithm";
-import {Node, Position} from "../Pathfinder";
-import {PriorityQueue} from "./DataStructures/PriorityQueue";
+import PathfindingAlgorithm, { PathData } from './PathfindingAlgorithm';
+import { Node, Position } from '../Pathfinder';
+import { PriorityQueue } from './DataStructures/PriorityQueue';
 
 export default class Dijkstra extends PathfindingAlgorithm {
     minHeap: PriorityQueue<Position> = new PriorityQueue<Position>();
@@ -24,7 +24,7 @@ export default class Dijkstra extends PathfindingAlgorithm {
                     let pathData: PathData = {
                         shortestPath: newDistance,
                         isVisited: true,
-                        previousNode: closestPosition
+                        previousNode: closestPosition,
                     };
                     this.pathValues.set(this.hash(neighbor), pathData);
                 }
@@ -39,7 +39,7 @@ export default class Dijkstra extends PathfindingAlgorithm {
     }
 
     private getDistance(pos1: Position, pos2: Position): number {
-        return Math.sqrt(Math.pow(Math.abs(pos1.x - pos2.x),2) + Math.pow(Math.abs(pos1.y - pos2.y),2))
+        return Math.sqrt(Math.pow(Math.abs(pos1.x - pos2.x), 2) + Math.pow(Math.abs(pos1.y - pos2.y), 2));
     }
 
     protected setMap(grid: Array<Array<Node>>, startPos: Position): void {
@@ -52,16 +52,17 @@ export default class Dijkstra extends PathfindingAlgorithm {
                 } else {
                     shortestPath = Infinity;
                 }
-                let pathData: PathData = {shortestPath: shortestPath, isVisited: false, previousNode: null};
+                let pathData: PathData = { shortestPath: shortestPath, isVisited: false, previousNode: null };
                 this.pathValues.set(this.hash(nodePosition), pathData);
             });
         });
     }
 
     findShortestPath(finishPos: Position): void {
-        for (let curPosition = finishPos;
-             curPosition != null;
-             curPosition = this.pathValues.get(this.hash(curPosition)).previousNode
+        for (
+            let curPosition = finishPos;
+            curPosition != null;
+            curPosition = this.pathValues.get(this.hash(curPosition)).previousNode
         ) {
             this.finalPath.unshift(curPosition);
         }
