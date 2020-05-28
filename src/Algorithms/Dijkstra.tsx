@@ -1,5 +1,5 @@
 import PathfindingAlgorithm, { PathData } from './PathfindingAlgorithm';
-import { Node, Position } from '../Pathfinder';
+import { Node, Position } from '../IPathfinder';
 import { PriorityQueue } from './DataStructures/PriorityQueue';
 
 export default class Dijkstra extends PathfindingAlgorithm {
@@ -17,7 +17,7 @@ export default class Dijkstra extends PathfindingAlgorithm {
             let neighbors: Array<Position> = this.getNeighbors(grid, closestPosition);
             let closestDistance: number = this.pathValues.get(this.hash(closestPosition)).shortestPath;
             for (let neighbor of neighbors) {
-                let newDistance: number = closestDistance + this.getDistance(closestPosition, neighbor);
+                let newDistance: number = closestDistance + this.getDistance(grid, closestPosition, neighbor);
                 let neighborPathData: PathData = this.pathValues.get(this.hash(neighbor));
                 this.minHeap.insert(neighbor, newDistance);
                 if (newDistance < neighborPathData.shortestPath) {
@@ -38,8 +38,12 @@ export default class Dijkstra extends PathfindingAlgorithm {
         this.calculatePath(grid, startPos, finishPos);
     }
 
-    private getDistance(pos1: Position, pos2: Position): number {
-        return Math.sqrt(Math.pow(Math.abs(pos1.x - pos2.x), 2) + Math.pow(Math.abs(pos1.y - pos2.y), 2));
+    private getDistance(grid: Node[][], current: Position, neighbor: Position): number {
+        let weightDifference = grid[neighbor.y][neighbor.x].weight - grid[current.y][current.x].weight;
+        return (
+            Math.pow(10000, weightDifference) *
+            Math.sqrt(Math.pow(Math.abs(current.x - neighbor.x), 2) + Math.pow(Math.abs(current.y - neighbor.y), 2))
+        );
     }
 
     protected setMap(grid: Array<Array<Node>>, startPos: Position): void {

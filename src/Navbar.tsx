@@ -8,10 +8,11 @@ import BFS from './Algorithms/BFS';
 interface Props {
     performAlgorithm: (algorithm: PathfindingAlgorithm) => void;
     clearPath: () => void;
+    generateLandscape: () => void;
 }
 
 export default class Navbar extends Component<Props> {
-    constructor(props: Props) {
+    constructor(props: any) {
         super(props);
         this.state = {};
     }
@@ -19,6 +20,13 @@ export default class Navbar extends Component<Props> {
     render(): any {
         return (
             <div className="navbar">
+                <button
+                    onClick={() => {
+                        this.props.generateLandscape();
+                    }}
+                >
+                    Generate Landscape
+                </button>
                 <button
                     onClick={() => {
                         this.props.performAlgorithm(new Dijkstra());

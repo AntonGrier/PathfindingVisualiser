@@ -1,6 +1,6 @@
 import PathfindingAlgorithm from './PathfindingAlgorithm';
 import Stack from './DataStructures/Stack';
-import { Position, Node } from '../Pathfinder';
+import { Position, Node } from '../IPathfinder';
 
 export default class DFS extends PathfindingAlgorithm {
     stack: Stack<Position> = new Stack<Position>();

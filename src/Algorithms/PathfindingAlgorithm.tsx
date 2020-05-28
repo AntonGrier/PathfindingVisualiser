@@ -1,4 +1,4 @@
-import { GRID_H, GRID_W, Node, NodeType, Position } from '../Pathfinder';
+import { GRID_H, GRID_W, Node, NodeType, Position } from '../IPathfinder';
 
 export interface PathData {
     isVisited: boolean;

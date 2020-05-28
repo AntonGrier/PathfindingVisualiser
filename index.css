@@ -18,8 +18,6 @@
 
 .cell-wall {
     background-color: black;
-    width: 25px;
-    height: 25px;
     animation-name: wall;
     animation-duration: 0.4s;
     animation-fill-mode: forwards;
@@ -27,10 +25,12 @@
 
 .cell-visited {
     background-color: deepskyblue;
+    opacity: var(--opacityVal);
 }
 
 .cell-shortestPath {
     background-color: yellow;
+    opacity: var(--opacityVal);
 }
 
 .grid {

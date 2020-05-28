@@ -1,6 +1,6 @@
 import PathfindingAlgorithm, { PathData } from './PathfindingAlgorithm';
 import Queue from './DataStructures/Queue';
-import { Node, Position } from '../Pathfinder';
+import { Node, Position } from '../IPathfinder';
 
 export default class BFS extends PathfindingAlgorithm {
     queue: Queue<Position> = new Queue<Position>();
