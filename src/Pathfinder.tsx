@@ -23,6 +23,7 @@ interface State {
     mouseState: MouseState;
     isMouseDown: boolean;
     updateLock: boolean;
+    perlinToggle: boolean;
     prevAlgorithm: PathfindingAlgorithm;
 }
 
@@ -59,20 +60,14 @@ export default class Pathfinder extends Component<{}, State> {
             mouseState: MouseState.PlacingWall,
             isMouseDown: false,
             updateLock: false,
+            perlinToggle: false,
             prevAlgorithm: null,
         };
     }
 
     shouldComponentUpdate(
         nextProps: Readonly<{}>,
-        nextState: Readonly<{
-            grid: Node[][];
-            startPos: Position;
-            finishPos: Position;
-            mouseState: MouseState;
-            isMouseDown: boolean;
-            updateLock: boolean;
-        }>,
+        nextState: Readonly<State>,
     ): boolean {
         return !nextState.updateLock;
     }
@@ -289,7 +284,7 @@ export default class Pathfinder extends Component<{}, State> {
     }
 
     public render(): any {
-        let grid = this.state.grid;
+        const grid = this.state.grid;
         return (
             <div>
                 <Navbar

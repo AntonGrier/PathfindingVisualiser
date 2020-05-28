@@ -25,12 +25,12 @@
 
 .cell-visited {
     background-color: deepskyblue;
-    opacity: var(--opacityVal);
+    opacity: 20%;
 }
 
 .cell-shortestPath {
     background-color: yellow;
-    opacity: var(--opacityVal);
+    opacity: 20%;
 }
 
 .grid {

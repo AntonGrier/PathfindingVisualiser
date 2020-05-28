@@ -61,16 +61,10 @@ export default class Cell extends Component<Props> {
             }
         }
         // TODO: Proper integration with visual perlin noise, w/o colour degradation with the regular pathfinding module
-        // let backgroundColor = {};
-        // if (nodeType === NodeType.Unvisited) {
-        //     let colour: string;
-        //     if (weight > 0) {
-        //         colour = this.convertWeightToGreyscale(weight);
-        //     } else {
-        //         colour = 'white';
-        //     }
-        //     backgroundColor = { backgroundColor: colour };
-        // }
+        let backgroundColor = {};
+        if (nodeType !== NodeType.ShortestPath && !isStart && !isFinish && weight > 0) {
+            backgroundColor = { backgroundColor: this.convertWeightToGreyscale(weight) };
+        }
         return (
             <div
                 ref={this.props.nodeRef}
