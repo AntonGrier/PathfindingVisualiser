@@ -5,11 +5,13 @@ import Dijkstra from './Algorithms/Dijkstra';
 import DFS from './Algorithms/DFS';
 import BFS from './Algorithms/BFS';
 
-export default class Navbar extends Component<
-    { performAlgorithm: (algorithm: PathfindingAlgorithm) => void; clearPath: () => void },
-    {}
-> {
-    constructor(props: any) {
+interface Props {
+    performAlgorithm: (algorithm: PathfindingAlgorithm) => void;
+    clearPath: () => void;
+}
+
+export default class Navbar extends Component<Props> {
+    constructor(props: Props) {
         super(props);
         this.state = {};
     }

@@ -32,19 +32,16 @@ export interface Node {
     position: Position;
     nodeType: NodeType;
 }
-
-export default class Pathfinder extends Component<
-    {},
-    {
-        grid: Array<Array<Node>>;
-        startPos: Position;
-        finishPos: Position;
-        mouseState: MouseState;
-        isMouseDown: boolean;
-        updateLock: boolean;
-        prevAlgorithm: PathfindingAlgorithm;
-    }
-> {
+interface State {
+    grid: Array<Array<Node>>;
+    startPos: Position;
+    finishPos: Position;
+    mouseState: MouseState;
+    isMouseDown: boolean;
+    updateLock: boolean;
+    prevAlgorithm: PathfindingAlgorithm;
+}
+export default class Pathfinder extends Component<{}, State> {
     references: Array<Array<RefObject<HTMLDivElement> | any>>;
     constructor(props: any) {
         super(props);

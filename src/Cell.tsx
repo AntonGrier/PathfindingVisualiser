@@ -1,19 +1,18 @@
 import * as React from 'react';
-import { Component, LegacyRef } from 'react';
+import { Component } from 'react';
 import { NodeType, Position } from './Pathfinder';
 import { RefObject } from 'react';
 
-export default class Cell extends Component<
-    {
-        position: Position;
-        isStart: boolean;
-        isFinish: boolean;
-        nodeType: NodeType;
-        updateMouseState: (position: Position, eventType: string) => void;
-        nodeRef: (ref: RefObject<HTMLDivElement> | any) => void;
-    },
-    {}
-> {
+interface Props {
+    position: Position;
+    isStart: boolean;
+    isFinish: boolean;
+    nodeType: NodeType;
+    updateMouseState: (position: Position, eventType: string) => void;
+    nodeRef: (ref: RefObject<HTMLDivElement> | any) => void;
+}
+
+export default class Cell extends Component<Props> {
     constructor(props: any) {
         super(props);
         this.state = {};
