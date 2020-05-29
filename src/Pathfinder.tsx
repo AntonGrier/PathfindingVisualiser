@@ -15,6 +15,7 @@ import Cell from './Cell';
 import Navbar from './Navbar';
 import PathfindingAlgorithm from './Algorithms/PathfindingAlgorithm';
 import PerlinNoise from './Algorithms/Perlin/PerlinNoise';
+import MazeGenerator from './mazes/MazeGenerator';
 
 interface State {
     grid: Node[][];
@@ -283,6 +284,40 @@ export default class Pathfinder extends Component<{}, State> {
         this.setState({ grid: grid });
     }
 
+    private generateMaze(mazeGenerator: MazeGenerator): void {
+        (async () => {
+            this.lockRender();
+            let walls: Position[] = mazeGenerator.generateWalls();
+            await this.visualizeMaze(walls);
+            this.unlockRender();
+            this.setState({ mouseState: MouseState.PlacingWall });
+        })();
+    }
+
+    private visualizeMaze(walls: Position[]): Promise<void> {
+        return new Promise<void>((resolve) => {
+            for (let i = 0; i <= walls.length; i++) {
+                setTimeout(() => {
+                    if (i === walls.length) {
+                        setTimeout(() => {
+                            resolve();
+                        }, UPDATE_RATE);
+                    } else {
+                        let position: Position = walls[i];
+                        let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
+                        let className: string = ref.current.className;
+                        if (!className.includes('cell-start') && !className.includes('cell-finish')) {
+                            ref.current.className = 'cell cell-wall';
+                        }
+                        let grid: Node[][] = this.state.grid;
+                        grid[position.y][position.x].nodeType = NodeType.Wall;
+                        this.setState({ grid: grid });
+                    }
+                }, UPDATE_RATE * i);
+            }
+        });
+    }
+
     public render(): any {
         const grid = this.state.grid;
         return (
@@ -291,6 +326,7 @@ export default class Pathfinder extends Component<{}, State> {
                     performAlgorithm={(algorithm: PathfindingAlgorithm) => this.performAlgorithm(algorithm)}
                     clearPath={() => this.setState({ prevAlgorithm: null, grid: this.clearPath() })}
                     generateLandscape={() => this.generateLandscape()}
+                    generateMaze={(mazeGenerator: MazeGenerator) => this.generateMaze(mazeGenerator)}
                 />
                 <div className="grid">
                     {grid.map((row: Array<Node>, rowIdx) => {
