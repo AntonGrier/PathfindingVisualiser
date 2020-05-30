@@ -46,6 +46,7 @@ class Pathfinder extends react_1.Component {
             mouseState: IPathfinder_1.MouseState.PlacingWall,
             isMouseDown: false,
             updateLock: false,
+            perlinToggle: false,
             prevAlgorithm: null,
         };
     }
@@ -207,7 +208,9 @@ class Pathfinder extends react_1.Component {
             for (let i = 0; i <= shortestPath.length; i++) {
                 setTimeout(() => {
                     if (i === shortestPath.length) {
-                        resolve();
+                        setTimeout(() => {
+                            resolve();
+                        }, IPathfinder_1.UPDATE_RATE);
                     }
                     else {
                         let position = shortestPath[i];
@@ -231,22 +234,56 @@ class Pathfinder extends react_1.Component {
         this.setState({ updateLock: false });
     }
     generateLandscape() {
-        const STEEPNESS = 0.1;
+        const STEEPNESS = 0.2;
         const perlin = new PerlinNoise_1.default();
+        const seed = Math.floor(Math.random() * 10000);
         let grid = this.state.grid;
         for (let y = 0; y < IPathfinder_1.GRID_H; y++) {
             for (let x = 0; x < IPathfinder_1.GRID_W; x++) {
-                let newWeight = perlin.noise(x * STEEPNESS, y * STEEPNESS, 0);
+                let newWeight = perlin.noise(x * STEEPNESS + seed, y * STEEPNESS + seed, 0);
                 grid[y][x].weight = newWeight;
             }
         }
         console.log(grid);
         this.setState({ grid: grid });
     }
+    generateMaze(mazeGenerator) {
+        (() => __awaiter(this, void 0, void 0, function* () {
+            this.lockRender();
+            let walls = mazeGenerator.generateWalls();
+            yield this.visualizeMaze(walls);
+            this.unlockRender();
+            this.setState({ mouseState: IPathfinder_1.MouseState.PlacingWall });
+        }))();
+    }
+    visualizeMaze(walls) {
+        return new Promise((resolve) => {
+            for (let i = 0; i <= walls.length; i++) {
+                setTimeout(() => {
+                    if (i === walls.length) {
+                        setTimeout(() => {
+                            resolve();
+                        }, IPathfinder_1.UPDATE_RATE);
+                    }
+                    else {
+                        let position = walls[i];
+                        let ref = this.references[position.y][position.x];
+                        let className = ref.current.className;
+                        if (!className.includes('cell-start') && !className.includes('cell-finish')) {
+                            ref.current.className = 'cell cell-wall';
+                        }
+                        let grid = this.state.grid;
+                        grid[position.y][position.x].nodeType = IPathfinder_1.NodeType.Wall;
+                        this.setState({ grid: grid });
+                    }
+                }, 10 * IPathfinder_1.UPDATE_RATE * i);
+            }
+        });
+    }
     render() {
-        let grid = this.state.grid;
+        const grid = this.state.grid;
         return (React.createElement("div", null,
-            React.createElement(Navbar_1.default, { performAlgorithm: (algorithm) => this.performAlgorithm(algorithm), clearPath: () => this.setState({ prevAlgorithm: null, grid: this.clearPath() }), generateLandscape: () => this.generateLandscape() }),
+            React.createElement(Navbar_1.default, { performAlgorithm: (algorithm) => this.performAlgorithm(algorithm), clearPath: () => this.setState({ prevAlgorithm: null, grid: this.clearPath() }), generateLandscape: () => this.generateLandscape(), generateMaze: (mazeGenerator) => this.generateMaze(mazeGenerator) }),
             React.createElement("div", { className: "grid" }, grid.map((row, rowIdx) => {
                 return (React.createElement("div", { className: "grid-row", key: rowIdx }, row.map((cell, colIdx) => {
                     return (React.createElement(Cell_1.default, { position: { x: colIdx, y: rowIdx }, isStart: this.state.startPos.x === colIdx && this.state.startPos.y === rowIdx, isFinish: this.state.finishPos.x === colIdx && this.state.finishPos.y === rowIdx, nodeType: cell.nodeType, weight: cell.weight, updateMouseState: (position, eventType) => this.updateMouseState(position, eventType), nodeRef: this.references[rowIdx][colIdx], key: colIdx }));

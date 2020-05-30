@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NodeType = exports.MouseState = exports.UPDATE_RATE = exports.DEFAULT_FINISH_POS = exports.DEFAULT_START_POS = exports.GRID_H = exports.GRID_W = void 0;
-exports.GRID_W = 50;
-exports.GRID_H = 27;
+exports.GRID_W = 41;
+exports.GRID_H = 20;
 exports.DEFAULT_START_POS = { x: Math.floor(exports.GRID_W / 4), y: Math.floor(exports.GRID_H / 2) };
 exports.DEFAULT_FINISH_POS = { x: exports.GRID_W - exports.DEFAULT_START_POS.x, y: exports.DEFAULT_START_POS.y };
 exports.UPDATE_RATE = 5;

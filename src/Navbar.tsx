@@ -6,12 +6,13 @@ import DFS from './Algorithms/DFS';
 import BFS from './Algorithms/BFS';
 import MazeGenerator from './mazes/MazeGenerator';
 import RecursiveDivision from './mazes/RecursiveDivision';
+import RecursiveBacktracking from './mazes/RecursiveBacktracking';
 
 interface Props {
     performAlgorithm: (algorithm: PathfindingAlgorithm) => void;
     clearPath: () => void;
     generateLandscape: () => void;
-    generateMaze: (mazeGenerator: MazeGenerator) => void
+    generateMaze: (mazeGenerator: MazeGenerator) => void;
 }
 
 export default class Navbar extends Component<Props> {
@@ -23,6 +24,13 @@ export default class Navbar extends Component<Props> {
     render(): any {
         return (
             <div className="navbar">
+                <button
+                    onClick={() => {
+                        this.props.generateMaze(new RecursiveBacktracking());
+                    }}
+                >
+                    Recursive BackTrack
+                </button>
                 <button
                     onClick={() => {
                         this.props.generateMaze(new RecursiveDivision());

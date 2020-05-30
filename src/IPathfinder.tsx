@@ -1,7 +1,7 @@
 import PathfindingAlgorithm from './Algorithms/PathfindingAlgorithm';
 
-export const GRID_W = 50;
-export const GRID_H = 25;
+export const GRID_W = 41;
+export const GRID_H = 21;
 export const DEFAULT_START_POS: Position = { x: Math.floor(GRID_W / 4), y: Math.floor(GRID_H / 2) };
 export const DEFAULT_FINISH_POS: Position = { x: GRID_W - DEFAULT_START_POS.x, y: DEFAULT_START_POS.y };
 export const UPDATE_RATE = 5;

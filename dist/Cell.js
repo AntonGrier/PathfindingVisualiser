@@ -49,11 +49,12 @@ class Cell extends react_1.Component {
                     break;
             }
         }
+        // TODO: Proper integration with visual perlin noise, w/o colour degradation with the regular pathfinding module
         let backgroundColor = {};
-        if (nodeType === IPathfinder_1.NodeType.Unvisited && !isStart && !isFinish && weight > 0) {
+        if (nodeType !== IPathfinder_1.NodeType.ShortestPath && !isStart && !isFinish && weight > 0) {
             backgroundColor = { backgroundColor: this.convertWeightToGreyscale(weight) };
         }
-        return (React.createElement("div", { ref: this.props.nodeRef, id: `cell-${this.props.position.x}-${this.props.position.y}`, style: Object.assign({}, backgroundColor), className: `cell ${className}`, onMouseDown: (event) => this.handleMouseEvent(event), onMouseUp: (event) => this.handleMouseEvent(event), onMouseEnter: (event) => this.handleMouseEvent(event) }));
+        return (React.createElement("div", { ref: this.props.nodeRef, id: `cell-${this.props.position.x}-${this.props.position.y}`, className: `cell ${className}`, style: Object.assign({}, backgroundColor), onMouseDown: (event) => this.handleMouseEvent(event), onMouseUp: (event) => this.handleMouseEvent(event), onMouseEnter: (event) => this.handleMouseEvent(event) }));
     }
 }
 exports.default = Cell;

@@ -5,6 +5,7 @@ const React = require("react");
 const Dijkstra_1 = require("./Algorithms/Dijkstra");
 const DFS_1 = require("./Algorithms/DFS");
 const BFS_1 = require("./Algorithms/BFS");
+const RecursiveDivision_1 = require("./mazes/RecursiveDivision");
 class Navbar extends react_1.Component {
     constructor(props) {
         super(props);
@@ -12,6 +13,9 @@ class Navbar extends react_1.Component {
     }
     render() {
         return (React.createElement("div", { className: "navbar" },
+            React.createElement("button", { onClick: () => {
+                    this.props.generateMaze(new RecursiveDivision_1.default());
+                } }, "Recursive Division"),
             React.createElement("button", { onClick: () => {
                     this.props.generateLandscape();
                 } }, "Generate Landscape"),

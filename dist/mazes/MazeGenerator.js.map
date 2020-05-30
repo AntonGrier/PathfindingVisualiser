@@ -1,0 +1,1 @@
+{"version":3,"file":"MazeGenerator.js","sourceRoot":"","sources":["../../src/mazes/MazeGenerator.ts"],"names":[],"mappings":";;AACA,MAA8B,aAAa;IAG7B,SAAS,CAAC,GAAW,EAAE,GAAW;QACxC,OAAO,GAAG,GAAG,IAAI,CAAC,KAAK,CAAC,CAAC,GAAG,GAAG,GAAG,GAAG,CAAC,CAAC,GAAG,IAAI,CAAC,MAAM,EAAE,CAAC,CAAC;IAC7D,CAAC;CACJ;AAND,gCAMC"}

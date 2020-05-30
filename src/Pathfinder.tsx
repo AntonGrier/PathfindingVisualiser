@@ -66,10 +66,7 @@ export default class Pathfinder extends Component<{}, State> {
         };
     }
 
-    shouldComponentUpdate(
-        nextProps: Readonly<{}>,
-        nextState: Readonly<State>,
-    ): boolean {
+    shouldComponentUpdate(nextProps: Readonly<{}>, nextState: Readonly<State>): boolean {
         return !nextState.updateLock;
     }
 
@@ -303,19 +300,32 @@ export default class Pathfinder extends Component<{}, State> {
                             resolve();
                         }, UPDATE_RATE);
                     } else {
+                        let grid: Node[][] = this.state.grid;
                         let position: Position = walls[i];
                         let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
                         let className: string = ref.current.className;
-                        if (!className.includes('cell-start') && !className.includes('cell-finish')) {
-                            ref.current.className = 'cell cell-wall';
+                        if (this.wallAlreadyPlaced(position)) {
+                            if (!className.includes('cell-start') && !className.includes('cell-finish')) {
+                                ref.current.className = 'cell cell-unvisited';
+                            }
+                            grid[position.y][position.x].nodeType = NodeType.Unvisited;
+                        } else {
+                            if (!className.includes('cell-start') && !className.includes('cell-finish')) {
+                                ref.current.className = 'cell cell-wall';
+                            }
+                            grid[position.y][position.x].nodeType = NodeType.Wall;
                         }
-                        let grid: Node[][] = this.state.grid;
-                        grid[position.y][position.x].nodeType = NodeType.Wall;
+
                         this.setState({ grid: grid });
                     }
                 }, UPDATE_RATE * i);
             }
         });
+    }
+
+    private wallAlreadyPlaced(wall: Position): boolean {
+        const grid = this.state.grid;
+        return grid[wall.y][wall.x].nodeType === NodeType.Wall;
     }
 
     public render(): any {

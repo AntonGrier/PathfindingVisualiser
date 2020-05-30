@@ -20,8 +20,7 @@ class Dijkstra extends PathfindingAlgorithm_1.default {
             let neighbors = this.getNeighbors(grid, closestPosition);
             let closestDistance = this.pathValues.get(this.hash(closestPosition)).shortestPath;
             for (let neighbor of neighbors) {
-                let newDistance = closestDistance +
-                    this.getDistance(closestPosition, neighbor) * Math.pow(1000, grid[neighbor.y][neighbor.x].weight);
+                let newDistance = closestDistance + this.getDistance(grid, closestPosition, neighbor);
                 let neighborPathData = this.pathValues.get(this.hash(neighbor));
                 this.minHeap.insert(neighbor, newDistance);
                 if (newDistance < neighborPathData.shortestPath) {
@@ -40,8 +39,10 @@ class Dijkstra extends PathfindingAlgorithm_1.default {
         this.minHeap = new PriorityQueue_1.PriorityQueue();
         this.calculatePath(grid, startPos, finishPos);
     }
-    getDistance(pos1, pos2) {
-        return Math.sqrt(Math.pow(Math.abs(pos1.x - pos2.x), 2) + Math.pow(Math.abs(pos1.y - pos2.y), 2));
+    getDistance(grid, current, neighbor) {
+        let weightDifference = grid[neighbor.y][neighbor.x].weight - grid[current.y][current.x].weight;
+        return (Math.pow(10000, weightDifference) *
+            Math.sqrt(Math.pow(Math.abs(current.x - neighbor.x), 2) + Math.pow(Math.abs(current.y - neighbor.y), 2)));
     }
     setMap(grid, startPos) {
         grid.forEach((row) => {
