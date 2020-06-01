@@ -7,6 +7,7 @@ import BFS from './Algorithms/BFS';
 import MazeGenerator from './mazes/MazeGenerator';
 import RecursiveDivision from './mazes/RecursiveDivision';
 import RecursiveBacktracking from './mazes/RecursiveBacktracking';
+import Ellers from './mazes/Ellers';
 
 interface Props {
     performAlgorithm: (algorithm: PathfindingAlgorithm) => void;
@@ -24,6 +25,13 @@ export default class Navbar extends Component<Props> {
     render(): any {
         return (
             <div className="navbar">
+                <button
+                    onClick={() => {
+                        this.props.generateMaze(new Ellers());
+                    }}
+                >
+                    Ellers
+                </button>
                 <button
                     onClick={() => {
                         this.props.generateMaze(new RecursiveBacktracking());

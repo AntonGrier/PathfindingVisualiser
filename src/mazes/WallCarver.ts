@@ -1,6 +1,9 @@
 import MazeGenerator from './MazeGenerator';
 import { Position, GRID_W, GRID_H } from '../IPathfinder';
 
+export const ADJUSTED_WIDTH = (GRID_W - 1) / 2;
+export const ADJUSTED_HEIGHT = (GRID_H - 1) / 2;
+
 export default abstract class WallCarver extends MazeGenerator {
     protected createStartingWalls(): void {
         for (let i = 0; i < GRID_W; i++) {

@@ -1,4 +1,3 @@
-import MazeGenerator from './MazeGenerator';
 import { Position, GRID_W, GRID_H } from '../IPathfinder';
 import WallCarver from './wallCarver';
 
