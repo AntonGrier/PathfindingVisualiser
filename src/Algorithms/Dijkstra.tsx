@@ -5,6 +5,7 @@ import { PriorityQueue } from './DataStructures/PriorityQueue';
 export default class Dijkstra extends PathfindingAlgorithm {
     minHeap: PriorityQueue<Position> = new PriorityQueue<Position>();
     calculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
+        this.reset();
         this.setMap(grid, startPos);
         this.minHeap.insert(startPos, 0);
         while (this.minHeap.size() !== 0) {
@@ -32,11 +33,10 @@ export default class Dijkstra extends PathfindingAlgorithm {
         }
     }
 
-    public recalculatePath(grid: Node[][], startPos: Position, finishPos: Position): void {
-        this.clear();
-        this.minHeap = new PriorityQueue<Position>();
-        this.calculatePath(grid, startPos, finishPos);
-    }
+    // public recalculatePath(grid: Node[][], startPos: Position, finishPos: Position): void {
+    //     this.reset();
+    //     this.calculatePath(grid, startPos, finishPos);
+    // }
 
     private getDistance(grid: Node[][], current: Position, neighbor: Position): number {
         let weightDifference = grid[neighbor.y][neighbor.x].weight - grid[current.y][current.x].weight;
@@ -70,5 +70,10 @@ export default class Dijkstra extends PathfindingAlgorithm {
         ) {
             this.finalPath.unshift(curPosition);
         }
+    }
+
+    protected reset(): void {
+        this.clear();
+        this.minHeap = new PriorityQueue<Position>();
     }
 }

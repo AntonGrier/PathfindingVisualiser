@@ -21,6 +21,7 @@ interface State {
     grid: Node[][];
     startPos: Position;
     finishPos: Position;
+    midpointPos: Position;
     mouseState: MouseState;
     isMouseDown: boolean;
     updateLock: boolean;
@@ -58,6 +59,7 @@ export default class Pathfinder extends Component<{}, State> {
             grid: grid,
             startPos: DEFAULT_START_POS,
             finishPos: DEFAULT_FINISH_POS,
+            midpointPos: null,
             mouseState: MouseState.PlacingWall,
             isMouseDown: false,
             updateLock: false,
@@ -105,20 +107,26 @@ export default class Pathfinder extends Component<{}, State> {
         let { grid, mouseState, isMouseDown, prevAlgorithm } = this.state;
         let nodeType: NodeType = grid[position.y][position.x].nodeType;
         if (
-            (mouseState === MouseState.MovingStart && this.isFinish(position)) ||
-            (mouseState === MouseState.MovingFinish && this.isStart(position))
+            (mouseState === MouseState.MovingStart ||
+                mouseState === MouseState.MovingFinish ||
+                mouseState === MouseState.MovingMidpoint) &&
+            !this.isEmpty(position)
         )
             return;
 
-        mouseState = this.isStart(position)
-            ? MouseState.MovingStart
-            : this.isFinish(position)
-            ? MouseState.MovingFinish
-            : nodeType === NodeType.Unvisited
-            ? MouseState.PlacingWall
-            : MouseState.RemovingWall;
+        if (this.isStart(position)) {
+            mouseState = MouseState.MovingStart;
+        } else if (this.isFinish(position)) {
+            mouseState = MouseState.MovingFinish;
+        } else if (this.isMidpoint(position)) {
+            mouseState = MouseState.MovingMidpoint;
+        } else if (nodeType === NodeType.Unvisited) {
+            mouseState = MouseState.PlacingWall;
+        } else {
+            mouseState = MouseState.RemovingWall;
+        }
 
-        if (!this.isStart(position) && !this.isFinish(position)) {
+        if (this.isEmpty(position)) {
             if (prevAlgorithm !== null) {
                 grid = this.clearPath();
                 prevAlgorithm = null;
@@ -140,14 +148,14 @@ export default class Pathfinder extends Component<{}, State> {
     }
 
     private onMouseEnter(position: Position) {
-        let { grid, startPos, finishPos, mouseState, isMouseDown, prevAlgorithm } = this.state;
-        if (!isMouseDown || this.isStart(position) || this.isFinish(position)) return;
+        let { grid, startPos, finishPos, midpointPos, mouseState, isMouseDown, prevAlgorithm } = this.state;
+        if (!isMouseDown || this.isStart(position) || this.isFinish(position) || this.isMidpoint(position)) return;
 
         switch (mouseState) {
             case MouseState.MovingStart:
                 startPos = position;
                 if (prevAlgorithm !== null) {
-                    this.recalculatePath(startPos, finishPos, prevAlgorithm);
+                    this.recalculatePath(startPos, finishPos, midpointPos, prevAlgorithm);
                 } else {
                     this.setState({ startPos: startPos });
                 }
@@ -155,9 +163,17 @@ export default class Pathfinder extends Component<{}, State> {
             case MouseState.MovingFinish:
                 finishPos = position;
                 if (prevAlgorithm !== null) {
-                    this.recalculatePath(startPos, finishPos, prevAlgorithm);
+                    this.recalculatePath(startPos, finishPos, midpointPos, prevAlgorithm);
                 } else {
                     this.setState({ finishPos: finishPos });
+                }
+                break;
+            case MouseState.MovingMidpoint:
+                midpointPos = position;
+                if (prevAlgorithm !== null) {
+                    this.recalculatePath(startPos, finishPos, midpointPos, prevAlgorithm);
+                } else {
+                    this.setState({ midpointPos: midpointPos });
                 }
                 break;
             case MouseState.PlacingWall:
@@ -171,18 +187,57 @@ export default class Pathfinder extends Component<{}, State> {
         }
     }
 
-    private recalculatePath(startPos: Position, finishPos: Position, prevAlgorithm: PathfindingAlgorithm) {
+    private recalculatePath(
+        startPos: Position,
+        finishPos: Position,
+        midpointPos: Position,
+        prevAlgorithm: PathfindingAlgorithm,
+    ) {
         let grid: Node[][] = this.clearPath();
-        prevAlgorithm.recalculatePath(grid, startPos, finishPos);
-        let visitedInOrder = prevAlgorithm.produceVisitedInOrder();
-        let finalPath = prevAlgorithm.produceFinalPath();
-        for (let position of visitedInOrder) {
-            grid[position.y][position.x].nodeType = NodeType.Visited;
+        // console.log(grid);
+
+        let visitedPaths: Position[][] = [];
+        let finalPaths: Position[][] = [];
+        if (midpointPos === null) {
+            prevAlgorithm.calculatePath(grid, startPos, finishPos);
+            visitedPaths.push(prevAlgorithm.produceVisitedInOrder());
+            finalPaths.push(prevAlgorithm.produceFinalPath());
+        } else {
+            prevAlgorithm.calculatePath(grid, this.state.startPos, this.state.midpointPos);
+            visitedPaths.push(prevAlgorithm.produceVisitedInOrder());
+            finalPaths.push(prevAlgorithm.produceFinalPath());
+
+            prevAlgorithm.calculatePath(grid, this.state.midpointPos, this.state.finishPos);
+            visitedPaths.push(prevAlgorithm.produceVisitedInOrder());
+            finalPaths.push(prevAlgorithm.produceFinalPath());
         }
-        for (let position of finalPath) {
-            grid[position.y][position.x].nodeType = NodeType.ShortestPath;
+
+        console.log(visitedPaths);
+
+        for (let idx = 0; idx < visitedPaths.length; idx++) {
+            let visited: Position[] = visitedPaths[idx];
+            for (let pos of visited) {
+                if (idx === 0) {
+                    grid[pos.y][pos.x].nodeType = NodeType.VisitedOne;
+                } else if (grid[pos.y][pos.x].nodeType === NodeType.VisitedOne) {
+                    grid[pos.y][pos.x].nodeType = NodeType.VisitedOverlap;
+                } else {
+                    grid[pos.y][pos.x].nodeType = NodeType.VisitedTwo;
+                }
+            }
         }
-        this.setState({ grid: grid, startPos: startPos, finishPos: finishPos });
+
+        for (let path of finalPaths) {
+            for (let pos of path) {
+                grid[pos.y][pos.x].nodeType = NodeType.ShortestPath;
+            }
+        }
+
+        this.setState({ grid: grid, startPos: startPos, finishPos: finishPos, midpointPos: midpointPos });
+    }
+
+    private isEmpty(position: Position) {
+        return !this.isStart(position) && !this.isFinish(position) && !this.isMidpoint(position);
     }
 
     private isStart(position: Position) {
@@ -193,25 +248,51 @@ export default class Pathfinder extends Component<{}, State> {
         return position.x === this.state.finishPos.x && position.y === this.state.finishPos.y;
     }
 
-    private performAlgorithm(algorithm: PathfindingAlgorithm): void {
-        this.setState({ prevAlgorithm: algorithm, mouseState: MouseState.Disabled });
-        algorithm.calculatePath(this.state.grid, this.state.startPos, this.state.finishPos);
-        let visitedInOrder: Array<Position> = algorithm.produceVisitedInOrder();
-        let shortestPath: Array<Position> = algorithm.produceFinalPath();
-        this.visualiseAlgorithm(visitedInOrder, shortestPath);
+    private isMidpoint(position: Position) {
+        return (
+            this.state.midpointPos !== null &&
+            position.x === this.state.midpointPos.x &&
+            position.y === this.state.midpointPos.y
+        );
     }
 
-    private visualiseAlgorithm(visitedInOrder: Array<Position>, shortestPath: Array<Position>): void {
+    private performAlgorithm(algorithm: PathfindingAlgorithm): void {
+        let midpointPos = this.state.midpointPos;
+        this.setState({ prevAlgorithm: algorithm, mouseState: MouseState.Disabled });
+        let visitedPaths: Position[][] = [];
+        let finalPaths: Position[][] = [];
+        if (midpointPos === null) {
+            algorithm.calculatePath(this.state.grid, this.state.startPos, this.state.finishPos);
+            visitedPaths.push(algorithm.produceVisitedInOrder());
+            finalPaths.push(algorithm.produceFinalPath());
+        } else {
+            algorithm.calculatePath(this.state.grid, this.state.startPos, this.state.midpointPos);
+            visitedPaths.push(algorithm.produceVisitedInOrder());
+            finalPaths.push(algorithm.produceFinalPath());
+
+            algorithm.calculatePath(this.state.grid, this.state.midpointPos, this.state.finishPos);
+            visitedPaths.push(algorithm.produceVisitedInOrder());
+            finalPaths.push(algorithm.produceFinalPath());
+        }
+
+        this.visualiseAlgorithm(visitedPaths, finalPaths);
+        this.setState({ mouseState: MouseState.PlacingWall });
+    }
+
+    private visualiseAlgorithm(visitedInOrder: Position[][], shortestPath: Position[][]): void {
         (async () => {
             this.lockRender();
-            await this.visualiseVisited(visitedInOrder);
-            await this.visualisePath(shortestPath);
+            for (let idx = 0; idx < visitedInOrder.length; idx++) {
+                let visited: Position[] = visitedInOrder[idx];
+                await this.visualiseVisited(visited, idx);
+            }
+
+            await this.visualisePath([].concat(...shortestPath));
             this.unlockRender();
-            this.setState({ mouseState: MouseState.PlacingWall });
         })();
     }
 
-    private visualiseVisited(visitedInOrder: Array<Position>): Promise<void> {
+    private visualiseVisited(visitedInOrder: Array<Position>, count: number): Promise<void> {
         return new Promise<void>((resolve) => {
             for (let i = 0; i <= visitedInOrder.length; i++) {
                 setTimeout(() => {
@@ -221,10 +302,24 @@ export default class Pathfinder extends Component<{}, State> {
                         let position: Position = visitedInOrder[i];
                         let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
                         let className: string = ref.current.className;
-                        if (!className.includes('cell-start') && !className.includes('cell-finish')) {
-                            ref.current.className = 'cell cell-visited';
+                        if (
+                            !className.includes('cell-start') &&
+                            !className.includes('cell-finish') &&
+                            !className.includes('cell-midpoint')
+                        ) {
+                            if (className.includes('cell-visited-0')) {
+                                ref.current.className = `cell cell-visited-overlap`;
+                            } else {
+                                ref.current.className = `cell cell-visited-${count}`;
+                            }
                             let grid: Node[][] = this.state.grid;
-                            grid[position.y][position.x].nodeType = NodeType.Visited;
+                            if (count === 0) {
+                                grid[position.y][position.x].nodeType = NodeType.VisitedOne;
+                            } else if (grid[position.y][position.x].nodeType === NodeType.VisitedOne) {
+                                grid[position.y][position.x].nodeType = NodeType.VisitedOverlap;
+                            } else {
+                                grid[position.y][position.x].nodeType = NodeType.VisitedTwo;
+                            }
                             this.setState({ grid: grid });
                         }
                     }
@@ -233,7 +328,7 @@ export default class Pathfinder extends Component<{}, State> {
         });
     }
 
-    private visualisePath(shortestPath: Array<Position>): Promise<void> {
+    private visualisePath(shortestPath: Position[]): Promise<void> {
         return new Promise<void>((resolve) => {
             for (let i = 0; i <= shortestPath.length; i++) {
                 setTimeout(() => {
@@ -328,6 +423,18 @@ export default class Pathfinder extends Component<{}, State> {
         return grid[wall.y][wall.x].nodeType === NodeType.Wall;
     }
 
+    setMidpoint(position: Position): void {
+        if (!this.isStart(position) && !this.isFinish(position)) {
+            let nextMidPoint: Position;
+            if (this.isMidpoint(position)) {
+                nextMidPoint = null;
+            } else {
+                nextMidPoint = position;
+            }
+            this.setState({ midpointPos: nextMidPoint });
+        }
+    }
+
     public render(): any {
         const grid = this.state.grid;
         return (
@@ -343,20 +450,19 @@ export default class Pathfinder extends Component<{}, State> {
                         return (
                             <div className="grid-row" key={rowIdx}>
                                 {row.map((cell: Node, colIdx) => {
+                                    let position: Position = { x: colIdx, y: rowIdx };
                                     return (
                                         <Cell
                                             position={{ x: colIdx, y: rowIdx }}
-                                            isStart={
-                                                this.state.startPos.x === colIdx && this.state.startPos.y === rowIdx
-                                            }
-                                            isFinish={
-                                                this.state.finishPos.x === colIdx && this.state.finishPos.y === rowIdx
-                                            }
+                                            isStart={this.isStart(position)}
+                                            isFinish={this.isFinish(position)}
+                                            isMidpoint={this.isMidpoint(position)}
                                             nodeType={cell.nodeType}
                                             weight={cell.weight}
                                             updateMouseState={(position: Position, eventType: string) =>
                                                 this.updateMouseState(position, eventType)
                                             }
+                                            setMidpoint={(position: Position) => this.setMidpoint(position)}
                                             nodeRef={this.references[rowIdx][colIdx]}
                                             key={colIdx}
                                         />

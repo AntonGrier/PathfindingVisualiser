@@ -15,7 +15,7 @@ export default abstract class PathfindingAlgorithm {
 
     public abstract calculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void;
 
-    public abstract recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void;
+    // public abstract recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void;
 
     public produceVisitedInOrder(): Array<Position> {
         return this.visitedNodesInOrder.slice(1, this.visitedNodesInOrder.length - 1);
@@ -84,4 +84,6 @@ export default abstract class PathfindingAlgorithm {
         this.finalPath = [];
         this.pathValues = new Map<string, PathData>();
     }
+
+    protected abstract reset(): void;
 }

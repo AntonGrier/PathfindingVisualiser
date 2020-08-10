@@ -6,6 +6,7 @@ export default class BFS extends PathfindingAlgorithm {
     queue: Queue<Position> = new Queue<Position>();
 
     calculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
+        this.reset();
         this.setMap(grid);
         this.queue.push(startPos);
         while (!this.queue.isEmpty()) {
@@ -46,9 +47,14 @@ export default class BFS extends PathfindingAlgorithm {
         }
     }
 
-    recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
+    // recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
+    //     this.clear();
+    //     this.queue = new Queue<Position>();
+    //     this.calculatePath(grid, startPos, finishPos);
+    // }
+
+    protected reset(): void {
         this.clear();
         this.queue = new Queue<Position>();
-        this.calculatePath(grid, startPos, finishPos);
     }
 }

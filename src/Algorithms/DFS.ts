@@ -5,6 +5,7 @@ import { Position, Node } from '../IPathfinder';
 export default class DFS extends PathfindingAlgorithm {
     stack: Stack<Position> = new Stack<Position>();
     calculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
+        this.reset();
         this.setMap(grid);
         this.stack.push(startPos);
         while (!this.stack.isEmpty()) {
@@ -30,9 +31,13 @@ export default class DFS extends PathfindingAlgorithm {
         });
     }
 
-    recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
+    // recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
+    //     this.reset();
+    //     this.calculatePath(grid, startPos, finishPos);
+    // }
+
+    protected reset(): void {
         this.clear();
         this.stack = new Stack<Position>();
-        this.calculatePath(grid, startPos, finishPos);
     }
 }

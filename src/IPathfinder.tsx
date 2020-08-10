@@ -15,16 +15,19 @@ export enum MouseState {
     RemovingWall,
     MovingStart,
     MovingFinish,
+    MovingMidpoint,
     Disabled,
 }
 export enum NodeType {
     Unvisited,
-    Visited,
+    VisitedOne,
+    VisitedTwo,
+    VisitedOverlap,
     Wall,
     ShortestPath,
 }
 export interface Node {
     position: Position;
     nodeType: NodeType;
-    weight: number; //
+    weight: number;
 }

@@ -6,9 +6,11 @@ interface Props {
     position: Position;
     isStart: boolean;
     isFinish: boolean;
+    isMidpoint: boolean;
     nodeType: NodeType;
     weight: number;
     updateMouseState: (position: Position, eventType: string) => void;
+    setMidpoint: (position: Position) => void;
     nodeRef: (ref: RefObject<HTMLDivElement> | any) => void;
 }
 
@@ -19,9 +21,13 @@ export default class Cell extends Component<Props> {
     }
 
     handleMouseEvent(event: React.MouseEvent<HTMLElement>): void {
-        let eventType: string = event.type;
         let position: Position = this.props.position;
-        this.props.updateMouseState(position, eventType);
+        if (event.nativeEvent.which === 1) {
+            let eventType: string = event.type;
+            this.props.updateMouseState(position, eventType);
+        } else if (event.nativeEvent.which === 3 && event.type === 'mousedown') {
+            this.props.setMidpoint(position);
+        }
     }
 
     /**
@@ -40,17 +46,23 @@ export default class Cell extends Component<Props> {
     }
 
     render(): any {
-        let { isStart, isFinish, nodeType, weight } = this.props;
+        let { isStart, isFinish, isMidpoint, nodeType, weight } = this.props;
         let className: string;
-        if (isStart || isFinish) {
-            className = isStart ? 'cell-start' : isFinish ? 'cell-finish' : '';
+        if (isStart || isFinish || isMidpoint) {
+            className = isStart ? 'cell-start' : isFinish ? 'cell-finish' : isMidpoint ? 'cell-midpoint' : '';
         } else {
             switch (nodeType) {
                 case NodeType.Unvisited:
                     className = 'cell-unvisited';
                     break;
-                case NodeType.Visited:
-                    className = 'cell-visited';
+                case NodeType.VisitedOne:
+                    className = 'cell-visited-0';
+                    break;
+                case NodeType.VisitedTwo:
+                    className = 'cell-visited-1';
+                    break;
+                case NodeType.VisitedOverlap:
+                    className = 'cell-visited-overlap';
                     break;
                 case NodeType.Wall:
                     className = 'cell-wall';
@@ -74,6 +86,7 @@ export default class Cell extends Component<Props> {
                 onMouseDown={(event) => this.handleMouseEvent(event)}
                 onMouseUp={(event) => this.handleMouseEvent(event)}
                 onMouseEnter={(event) => this.handleMouseEvent(event)}
+                onContextMenu={(event) => event.preventDefault()}
             />
         );
     }

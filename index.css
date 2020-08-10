@@ -19,24 +19,48 @@
 }
 
 .cell-finish {
-    background-color: mediumpurple;
+    background-color: red;
+}
+
+.cell-midpoint {
+    background-color: palevioletred;
 }
 
 .cell-wall {
     background-color: black;
     animation-name: wall;
-    animation-duration: 0.4s;
+    animation-duration: 0.3s;
     animation-fill-mode: forwards;
 }
 
-.cell-visited {
+.cell-visited-0 {
     background-color: deepskyblue;
-    opacity: 20%;
+    /* opacity: 20%; */
+}
+
+.cell-visited-1 {
+    background-color: magenta;
+    /* opacity: 20%; */
+}
+
+.cell-visited-overlap {
+    background-color: pink;
+    /* opacity: 20%; */
 }
 
 .cell-shortestPath {
     background-color: yellow;
-    opacity: 20%;
+    /* opacity: 20%; */
+}
+
+.cell-visited-midpoint {
+    background-color: purple;
+    /* opacity: 20%; */
+}
+
+.cell-shortestPath-midpoint {
+    background-color: orange;
+    /* opacity: 20%; */
 }
 
 .grid {
@@ -57,7 +81,7 @@
 *::before {
     -webkit-user-select: none;
     -webkit-user-drag: none;
-    cursor: default;
+    /* cursor: default; */
 }
 
 .navbar {
@@ -69,7 +93,7 @@
 
 @keyframes wall {
     0% {
-        transform: scale(1.5);
+        transform: scale(1.6);
     }
     /*50% {transform: scale(); }*/
     75% {
