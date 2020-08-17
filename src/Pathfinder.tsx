@@ -194,8 +194,6 @@ export default class Pathfinder extends Component<{}, State> {
         prevAlgorithm: PathfindingAlgorithm,
     ) {
         let grid: Node[][] = this.clearPath();
-        // console.log(grid);
-
         let visitedPaths: Position[][] = [];
         let finalPaths: Position[][] = [];
         if (midpointPos === null) {
@@ -203,11 +201,11 @@ export default class Pathfinder extends Component<{}, State> {
             visitedPaths.push(prevAlgorithm.produceVisitedInOrder());
             finalPaths.push(prevAlgorithm.produceFinalPath());
         } else {
-            prevAlgorithm.calculatePath(grid, this.state.startPos, this.state.midpointPos);
+            prevAlgorithm.calculatePath(grid, startPos, midpointPos);
             visitedPaths.push(prevAlgorithm.produceVisitedInOrder());
             finalPaths.push(prevAlgorithm.produceFinalPath());
 
-            prevAlgorithm.calculatePath(grid, this.state.midpointPos, this.state.finishPos);
+            prevAlgorithm.calculatePath(grid, midpointPos, finishPos);
             visitedPaths.push(prevAlgorithm.produceVisitedInOrder());
             finalPaths.push(prevAlgorithm.produceFinalPath());
         }
@@ -340,7 +338,11 @@ export default class Pathfinder extends Component<{}, State> {
                         let position: Position = shortestPath[i];
                         let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
                         let className: string = ref.current.className;
-                        if (!className.includes('cell-start') && !className.includes('cell-finish')) {
+                        if (
+                            !className.includes('cell-start') &&
+                            !className.includes('cell-finish') &&
+                            !className.includes('cell-midpoint')
+                        ) {
                             ref.current.className = 'cell cell-shortestPath';
                             let grid: Node[][] = this.state.grid;
                             grid[position.y][position.x].nodeType = NodeType.ShortestPath;
@@ -405,7 +407,11 @@ export default class Pathfinder extends Component<{}, State> {
                             }
                             grid[position.y][position.x].nodeType = NodeType.Unvisited;
                         } else {
-                            if (!className.includes('cell-start') && !className.includes('cell-finish')) {
+                            if (
+                                !className.includes('cell-start') &&
+                                !className.includes('cell-finish') &&
+                                !className.includes('cell-midpoint')
+                            ) {
                                 ref.current.className = 'cell cell-wall';
                             }
                             grid[position.y][position.x].nodeType = NodeType.Wall;
@@ -424,6 +430,8 @@ export default class Pathfinder extends Component<{}, State> {
     }
 
     setMidpoint(position: Position): void {
+        let prevAlgorithm = this.state.prevAlgorithm;
+        let grid = this.state.grid;
         if (!this.isStart(position) && !this.isFinish(position)) {
             let nextMidPoint: Position;
             if (this.isMidpoint(position)) {
@@ -431,7 +439,13 @@ export default class Pathfinder extends Component<{}, State> {
             } else {
                 nextMidPoint = position;
             }
-            this.setState({ midpointPos: nextMidPoint });
+            //
+            if (prevAlgorithm !== null) {
+                prevAlgorithm = null;
+                grid = this.clearPath();
+            }
+            //
+            this.setState({ grid: grid, prevAlgorithm: prevAlgorithm, midpointPos: nextMidPoint });
         }
     }
 
