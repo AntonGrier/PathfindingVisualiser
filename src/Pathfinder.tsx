@@ -39,13 +39,6 @@ export default class Pathfinder extends Component<{}, State> {
         );
     constructor(props: any) {
         super(props);
-        // this.references = Array(GRID_H)
-        //     .fill([])
-        //     .map(() =>
-        //         Array(GRID_W)
-        //             .fill(0)
-        //             .map(() => createRef()),
-        //     );
         let grid: Node[][] = [];
         for (let row = 0; row < GRID_H; row++) {
             let curRow: Array<Node> = [];

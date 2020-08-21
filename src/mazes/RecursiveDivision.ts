@@ -2,56 +2,50 @@ import MazeGenerator from './MazeGenerator';
 import { Position, GRID_W, GRID_H } from '../IPathfinder';
 
 export default class RecursiveDivision extends MazeGenerator {
-    gapMap: Map<string, Position>;
     public generateWalls(): Position[] {
         this.wallsCreatedInOrder = [];
-        this.gapMap = new Map<string, Position>();
+        this.generateBorder();
         const ul: Position = { x: 0, y: 0 };
         const lr: Position = { x: GRID_W - 1, y: GRID_H - 1 };
         this.divide(ul, lr);
         return this.wallsCreatedInOrder;
     }
+    generateBorder(): void {
+        for (let i = 0; i < GRID_W; i++) {
+            let topBorderWall: Position = { x: i, y: 0 };
+            let botBorderWall: Position = { x: i, y: GRID_H - 1 };
+            this.addWall(topBorderWall);
+            this.addWall(botBorderWall);
+        }
+        for (let i = 1; i < GRID_H - 1; i++) {
+            let leftBorderWall: Position = { x: 0, y: i };
+            let rightBorderWall: Position = { x: GRID_W - 1, y: i };
+            this.addWall(leftBorderWall);
+            this.addWall(rightBorderWall);
+        }
+    }
 
     private divide(ul: Position, lr: Position) {
         let width: number = lr.x - ul.x + 1;
         let height: number = lr.y - ul.y + 1;
-        if (width < 2 || height < 2 || (width === 2 && height === 2)) {
-            // || (height === 3 && width === 2) || (height ===  && width === 2)) {
-            return;
-        }
         let vertical: boolean = width > height;
         let splitIdx: number;
         let gap: Position;
-        let found = false;
-        while (!found) {
-            if (vertical) {
-                splitIdx = this.getRandom(ul.x + 1, lr.x - 1);
-                gap = { x: splitIdx, y: this.getRandom(ul.y, lr.y) };
-                console.log(`Trying ${splitIdx}, width: ${width} heoght: ${height}`);
-                let up: Position = { x: splitIdx, y: ul.y - 1 };
-                let down: Position = { x: splitIdx, y: lr.y + 1 };
-                if (width > 2 && height > 2) {
-                    found = !this.gapMap.has(this.hash(up)) && !this.gapMap.has(this.hash(down));
-                } else {
-                    found = true;
-                }
-            } else {
-                splitIdx = this.getRandom(ul.y + 1, lr.y - 1);
-                gap = { x: this.getRandom(ul.x, lr.x), y: splitIdx };
-                console.log(`Trying ${splitIdx}, width: ${width} heoght: ${height}`);
-                let left: Position = { x: ul.x - 1, y: splitIdx };
-                let right: Position = { x: lr.x + 1, y: splitIdx };
-                if (width > 2 && height > 2) {
-                    found = !this.gapMap.has(this.hash(left)) && !this.gapMap.has(this.hash(right));
-                } else {
-                    found = true;
-                }
-            }
+        if (vertical) {
+            if (width < 4) return;
+            splitIdx = this.randomEven(ul.x, lr.x);
+            console.log(splitIdx);
+            gap = { x: splitIdx, y: this.randomOdd(ul.y, lr.y) };
+            console.log(`Trying ${splitIdx}, gap (${gap.x},${gap.y}) width: ${width} height: ${height}`);
+        } else {
+            if (height < 4) return;
+            splitIdx = this.randomEven(ul.y, lr.y);
+            console.log(splitIdx);
+            gap = { x: this.randomOdd(ul.x, lr.x), y: splitIdx };
+            console.log(`Trying ${splitIdx}, gap (${gap.x},${gap.y}) width: ${width} height: ${height}`);
         }
 
-        this.gapMap.set(this.hash(gap), gap);
-
-        for (let i = vertical ? ul.y : ul.x; i <= (vertical ? lr.y : lr.x); i++) {
+        for (let i = vertical ? ul.y + 1 : ul.x + 1; i <= (vertical ? lr.y - 1 : lr.x - 1); i++) {
             if (i === (vertical ? gap.y : gap.x)) continue;
             let pos: Position;
             if (vertical) {
@@ -65,43 +59,58 @@ export default class RecursiveDivision extends MazeGenerator {
         let newLr: Position;
         let newUl: Position;
         if (vertical) {
-            newLr = { x: splitIdx - 1, y: lr.y };
-            newUl = { x: splitIdx + 1, y: ul.y };
+            newLr = { x: splitIdx, y: lr.y };
+            newUl = { x: splitIdx, y: ul.y };
         } else {
-            newLr = { x: lr.x, y: splitIdx - 1 };
-            newUl = { x: ul.x, y: splitIdx + 1 };
+            newLr = { x: lr.x, y: splitIdx };
+            newUl = { x: ul.x, y: splitIdx };
         }
+
         this.divide(ul, newLr);
         this.divide(newUl, lr);
     }
-    // checkSplit(ul: Position, lr: Position, splitIdx: number, vertical: boolean): boolean {
-    //     let wallStart: Position;
-    //     let wallFinish: Position;
-    //     if (vertical) {
-    //         wallStart = { x: splitIdx, y: ul.y };
-    //         wallFinish = { x: splitIdx, y: lr.y };
-    //     } else {
-    //         wallStart = { x: ul.x, y: splitIdx };
-    //         wallFinish = { x: lr.x, y: splitIdx };
-    //     }
-    // }
+
+    /**
+     *
+     * @param min
+     * @param max
+     *
+     * produce a random even number in a range to match a valid wall coordinate that is not next to a current wall
+     */
+    private randomEven(min: number, max: number): number {
+        min += 2;
+        max -= 2;
+        if (min % 2 === 1) {
+            min++;
+        }
+        if (max % 2 === 1) {
+            max--;
+        }
+        let wall = min + 2 * this.getRandom(0, (max - min) / 2);
+        return wall;
+    }
+
+    /**
+     *
+     * @param min
+     * @param max
+     *
+     * produce a random odd number in a range to match a valid gap coordinate
+     */
+    private randomOdd(min: number, max: number): number {
+        min += 2;
+        max -= 2;
+        if (min % 2 === 0) {
+            min++;
+        }
+        if (max % 2 === 0) {
+            max--;
+        }
+        let gap = min + 2 * this.getRandom(0, (max - min) / 2);
+        return gap;
+    }
 
     private hash(position: Position): string {
         return position.x.toString() + '-' + position.y.toString();
     }
-
-    // private buildWall(min: number, max: number, splitIdx: number, vertical: boolean): void {
-    //     let divLen = max - min;
-    //     let wallGap = this.getRandom(divLen);
-    //     for (let i = min; i < max; i++) {
-    //         if (i === wallGap) continue;
-    //         let pos: Position;
-    //         if (vertical) {
-    //             pos = { x: splitIdx, y: i };
-    //         } else {
-    //             pos = { x: i, y: splitIdx };
-    //         }
-    //         this.wallsCreatedInOrder.push(pos);
-    //     }
-    // }
 }
