@@ -6,12 +6,11 @@ export default class RecursiveBacktracking extends WallCarver {
     public generateWalls(): Position[] {
         this.wallsCreatedInOrder = [];
         this.visited = new Map<string, boolean>();
-        this.createStartingWalls();
-        let randomPos: Position = {
+        let randomStartingPos: Position = {
             x: 2 * this.getRandom(1, (GRID_W - 1) / 2) - 1,
             y: 2 * this.getRandom(1, (GRID_H - 1) / 2) - 1,
         };
-        this.carveWalls(randomPos);
+        this.carveWalls(randomStartingPos);
         return this.wallsCreatedInOrder;
     }
 

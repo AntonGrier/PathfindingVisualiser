@@ -288,7 +288,9 @@ export default class Pathfinder extends Component<{}, State> {
             for (let i = 0; i <= visitedInOrder.length; i++) {
                 setTimeout(() => {
                     if (i === visitedInOrder.length) {
-                        resolve();
+                        setTimeout(() => {
+                            resolve();
+                        }, UPDATE_RATE);
                     } else {
                         let position: Position = visitedInOrder[i];
                         let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
@@ -374,11 +376,32 @@ export default class Pathfinder extends Component<{}, State> {
     private generateMaze(mazeGenerator: MazeGenerator): void {
         (async () => {
             this.lockRender();
+            let setupWalls: Position[] = mazeGenerator.getSetup();
             let walls: Position[] = mazeGenerator.generateWalls();
+            await this.setupStartingWalls(setupWalls);
             await this.visualizeMaze(walls);
             this.unlockRender();
             this.setState({ mouseState: MouseState.PlacingWall });
         })();
+    }
+
+    private setupStartingWalls(walls: Position[]): Promise<void> {
+        return new Promise<void>((resolve) => {
+            for (let i = 0; i <= walls.length; i++) {
+                if (i === walls.length) {
+                    setTimeout(() => {
+                        resolve();
+                    }, 1000);
+                } else {
+                    let grid: Node[][] = this.state.grid;
+                    let position = walls[i];
+                    let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
+                    grid[position.y][position.x].nodeType = NodeType.Wall;
+                    ref.current.className = 'cell cell-wall';
+                    this.setState({ grid: grid });
+                }
+            }
+        });
     }
 
     private visualizeMaze(walls: Position[]): Promise<void> {

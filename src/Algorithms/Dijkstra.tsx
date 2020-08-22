@@ -33,11 +33,6 @@ export default class Dijkstra extends PathfindingAlgorithm {
         }
     }
 
-    // public recalculatePath(grid: Node[][], startPos: Position, finishPos: Position): void {
-    //     this.reset();
-    //     this.calculatePath(grid, startPos, finishPos);
-    // }
-
     private getDistance(grid: Node[][], current: Position, neighbor: Position): number {
         let weightDifference = grid[neighbor.y][neighbor.x].weight - grid[current.y][current.x].weight;
         return (

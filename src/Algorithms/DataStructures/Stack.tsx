@@ -13,9 +13,6 @@ export default class Stack<T> {
         this.top--;
         return this.data[this.top];
     }
-    // public peek(): T {
-    //     return this.data[this.top - 1];
-    // }
     public isEmpty(): boolean {
         return this.top === 0;
     }

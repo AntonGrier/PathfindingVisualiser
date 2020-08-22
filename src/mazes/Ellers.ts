@@ -5,7 +5,6 @@ import WallCarver, { ADJUSTED_WIDTH, ADJUSTED_HEIGHT } from './wallCarver';
 export default class Ellers extends WallCarver {
     public generateWalls(): Position[] {
         this.wallsCreatedInOrder = [];
-        this.createStartingWalls();
         this.generateMaze();
         return this.wallsCreatedInOrder;
     }

@@ -11,21 +11,19 @@ export default abstract class PathfindingAlgorithm {
     finalPath: Array<Position> = [];
     visitedNodesInOrder: Array<Position> = [];
 
-    protected abstract setMap(grid: Array<Array<Node>>, startPos?: Position): void;
+    protected abstract setMap(grid: Node[][], startPos?: Position): void;
 
-    public abstract calculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void;
+    public abstract calculatePath(grid: Node[][], startPos: Position, finishPos: Position): void;
 
-    // public abstract recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void;
-
-    public produceVisitedInOrder(): Array<Position> {
+    public produceVisitedInOrder(): Position[] {
         return this.visitedNodesInOrder.slice(1, this.visitedNodesInOrder.length - 1);
     }
 
-    public produceFinalPath(): Array<Position> {
+    public produceFinalPath(): Position[] {
         return this.finalPath.slice(1, this.visitedNodesInOrder.length - 1);
     }
 
-    protected getNeighbors(grid: Array<Array<Node>>, position: Position): Array<Position> {
+    protected getNeighbors(grid: Node[][], position: Position): Array<Position> {
         let neighbors: Array<Position> = [];
         neighbors.push({ x: position.x + 1, y: position.y });
         neighbors.push({ x: position.x, y: position.y + 1 });
@@ -50,7 +48,7 @@ export default abstract class PathfindingAlgorithm {
         });
     }
 
-    private cornerCheck(position: Position, neighbor: Position, grid: Array<Array<Node>>): boolean {
+    private cornerCheck(position: Position, neighbor: Position, grid: Node[][]): boolean {
         return (
             grid[position.y][neighbor.x].nodeType !== NodeType.Wall ||
             grid[neighbor.y][position.x].nodeType !== NodeType.Wall

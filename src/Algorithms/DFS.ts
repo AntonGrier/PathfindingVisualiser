@@ -31,11 +31,6 @@ export default class DFS extends PathfindingAlgorithm {
         });
     }
 
-    // recalculatePath(grid: Array<Array<Node>>, startPos: Position, finishPos: Position): void {
-    //     this.reset();
-    //     this.calculatePath(grid, startPos, finishPos);
-    // }
-
     protected reset(): void {
         this.clear();
         this.stack = new Stack<Position>();

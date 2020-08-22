@@ -4,25 +4,10 @@ import { Position, GRID_W, GRID_H } from '../IPathfinder';
 export default class RecursiveDivision extends MazeGenerator {
     public generateWalls(): Position[] {
         this.wallsCreatedInOrder = [];
-        this.generateBorder();
         const ul: Position = { x: 0, y: 0 };
         const lr: Position = { x: GRID_W - 1, y: GRID_H - 1 };
         this.divide(ul, lr);
         return this.wallsCreatedInOrder;
-    }
-    generateBorder(): void {
-        for (let i = 0; i < GRID_W; i++) {
-            let topBorderWall: Position = { x: i, y: 0 };
-            let botBorderWall: Position = { x: i, y: GRID_H - 1 };
-            this.addWall(topBorderWall);
-            this.addWall(botBorderWall);
-        }
-        for (let i = 1; i < GRID_H - 1; i++) {
-            let leftBorderWall: Position = { x: 0, y: i };
-            let rightBorderWall: Position = { x: GRID_W - 1, y: i };
-            this.addWall(leftBorderWall);
-            this.addWall(rightBorderWall);
-        }
     }
 
     private divide(ul: Position, lr: Position) {
