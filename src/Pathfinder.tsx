@@ -396,8 +396,15 @@ export default class Pathfinder extends Component<{}, State> {
                     let grid: Node[][] = this.state.grid;
                     let position = walls[i];
                     let ref: RefObject<HTMLDivElement> = this.references[position.y][position.x];
+                    let className = ref.current.className;
                     grid[position.y][position.x].nodeType = NodeType.Wall;
-                    ref.current.className = 'cell cell-wall';
+                    if (
+                        !className.includes('cell-start') &&
+                        !className.includes('cell-finish') &&
+                        !className.includes('cell-midpoint')
+                    ) {
+                        ref.current.className = 'cell cell-wall';
+                    }
                     this.setState({ grid: grid });
                 }
             }
