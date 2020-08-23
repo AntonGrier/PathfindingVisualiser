@@ -1,3 +1,9 @@
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
 .cell {
     background-color: white;
     border-color: #b2c9e3;
@@ -9,16 +15,16 @@
 }
 
 .cell-start {
-    margin: 0px;
-    width: 26px;
-    height: 26px;
+    /* margin: 0px;
+    width: 25px;
+    height: 25px; */
     background-color: limegreen;
 }
 
 .cell-finish {
-    margin: 0px;
-    width: 26px;
-    height: 26px;
+    /* margin: 0px; */
+    /* width: 25px;
+    height: 25px; */
     background-color: red;
 }
 
@@ -27,9 +33,9 @@
 }
 
 .cell-wall {
-    margin: 0px;
-    width: 26px;
-    height: 26px;
+    /* margin: 0px; */
+    width: 25px;
+    height: 25px;
     background-color: #1a1a1a;
     animation-name: wall;
     animation-duration: 0.3s;
@@ -70,7 +76,7 @@
     /* border: 0.5px solid #b2c9e3; */
     /* border-right: 0.05px solid #b2c9e3;
     border-bottom: 0.05px solid #b2c9e3; */
-    margin: 1px;
+    /* margin: 1px; */
     margin-top: 5vh;
     display: inline-block;
     height: auto;
