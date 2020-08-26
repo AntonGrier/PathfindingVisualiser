@@ -1,12 +1,14 @@
-html, body {
+html,
+body {
     max-width: 100%;
     overflow-x: hidden;
     overflow-y: hidden;
 }
 
 .cell {
+    padding-bottom: 0.5px;
+    padding-right: 0.5px;
     background-color: white;
-    border-color: #b2c9e3;
     width: 25px;
     height: 25px;
     display: inline-block;
@@ -15,27 +17,36 @@ html, body {
 }
 
 .cell-start {
-    /* margin: 0px;
+    margin: 0.5px;
+    background: url(images/start3.svg);
+    background-repeat: no-repeat;
     width: 25px;
-    height: 25px; */
-    background-color: limegreen;
+    height: 25px;
+    background-color: white;
 }
 
 .cell-finish {
-    /* margin: 0px; */
-    /* width: 25px;
-    height: 25px; */
-    background-color: red;
+    margin: 0.5px;
+    background: url(images/finish4.svg);
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    background-color: white;
 }
 
 .cell-midpoint {
-    background-color: palevioletred;
+    margin: 0.5px;
+    background: url(images/midpoint2.svg);
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    background-color: white;
 }
 
 .cell-wall {
-    /* margin: 0px; */
-    width: 25px;
-    height: 25px;
+    margin: 0px;
+    width: 26px;
+    height: 26px;
     background-color: #1a1a1a;
     animation-name: wall;
     animation-duration: 0.3s;
@@ -58,6 +69,9 @@ html, body {
 }
 
 .cell-shortestPath {
+    margin: 0px;
+    width: 26px;
+    height: 26px;
     background-color: yellow;
     /* opacity: 20%; */
 }
