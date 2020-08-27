@@ -37,15 +37,15 @@ export default class BFS extends PathfindingAlgorithm {
         });
     }
 
-    private findShortestPath(finishPos: Position) {
-        for (
-            let curPosition = finishPos;
-            curPosition != null;
-            curPosition = this.pathValues.get(this.hash(curPosition)).previousNode
-        ) {
-            this.finalPath.unshift(curPosition);
-        }
-    }
+    // protected findShortestPath(finishPos: Position) {
+    //     for (
+    //         let curPosition = finishPos;
+    //         curPosition != null;
+    //         curPosition = this.pathValues.get(this.hash(curPosition)).previousNode
+    //     ) {
+    //         this.finalPath.unshift(curPosition);
+    //     }
+    // }
 
     protected reset(): void {
         this.clear();

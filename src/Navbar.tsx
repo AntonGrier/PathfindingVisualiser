@@ -8,6 +8,7 @@ import MazeGenerator from './mazes/MazeGenerator';
 import RecursiveDivision from './mazes/RecursiveDivision';
 import RecursiveBacktracking from './mazes/RecursiveBacktracking';
 import Ellers from './mazes/Ellers';
+import AStar from './Algorithms/AStar';
 
 interface Props {
     performAlgorithm: (algorithm: PathfindingAlgorithm) => void;
@@ -52,6 +53,13 @@ export default class Navbar extends Component<Props> {
                     }}
                 >
                     Generate Landscape
+                </button>
+                <button
+                    onClick={() => {
+                        this.props.performAlgorithm(new AStar());
+                    }}
+                >
+                    AStar
                 </button>
                 <button
                     onClick={() => {

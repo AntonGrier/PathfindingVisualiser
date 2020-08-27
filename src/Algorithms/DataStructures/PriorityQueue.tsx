@@ -19,16 +19,23 @@ export class PriorityQueue<T extends Node> {
         const tmp: Tuple<T>[] = [];
         let found = false;
 
+        console.log("THE HEAP BEFORE",this.heap);
+
         for (let i = 0; i < this.heap.length; i++) {
             const p = this.heap[i][1];
+            const n = this.heap[i][0];
 
             if (priority >= p && !found) {
                 tmp.push([val, priority]);
                 found = true;
             }
-
-            tmp.push(this.heap[i]);
+            
+            if (!found || !(n.x === val.x && n.y === val.y)) {
+                tmp.push(this.heap[i]);
+            }     
         }
+
+        console.log("HEAP AFTER", tmp);
 
         return (this.heap = tmp);
     }
@@ -42,7 +49,7 @@ export class PriorityQueue<T extends Node> {
     get({ x, y }: T) {
         const foundNode = this.heap.find(([val]) => val.x === x && val.y === y);
 
-        return foundNode && foundNode[0];
+        return foundNode && foundNode[1];
     }
 
     shift(priority: boolean) {

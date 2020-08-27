@@ -55,6 +55,14 @@ export default abstract class PathfindingAlgorithm {
         );
     }
 
+    protected getDistance(grid: Node[][], current: Position, neighbor: Position): number {
+        let weightDifference = grid[neighbor.y][neighbor.x].weight - grid[current.y][current.x].weight;
+        return (
+            Math.pow(10000, weightDifference) *
+            Math.sqrt(Math.pow(Math.abs(current.x - neighbor.x), 2) + Math.pow(Math.abs(current.y - neighbor.y), 2))
+        );
+    }
+
     protected isVisited(position: Position): boolean {
         return this.pathValues.get(this.hash(position)).isVisited;
     }
@@ -67,6 +75,16 @@ export default abstract class PathfindingAlgorithm {
             isVisited: true,
         };
         this.pathValues.set(this.hash(position), newPathData);
+    }
+
+    protected findShortestPath(finishPos: Position): void {
+        for (
+            let curPosition = finishPos;
+            curPosition != null;
+            curPosition = this.pathValues.get(this.hash(curPosition)).previousNode
+        ) {
+            this.finalPath.unshift(curPosition);
+        }
     }
 
     protected equalPosition(pos1: Position, pos2: Position) {

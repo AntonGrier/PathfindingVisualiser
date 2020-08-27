@@ -33,14 +33,6 @@ export default class Dijkstra extends PathfindingAlgorithm {
         }
     }
 
-    private getDistance(grid: Node[][], current: Position, neighbor: Position): number {
-        let weightDifference = grid[neighbor.y][neighbor.x].weight - grid[current.y][current.x].weight;
-        return (
-            Math.pow(10000, weightDifference) *
-            Math.sqrt(Math.pow(Math.abs(current.x - neighbor.x), 2) + Math.pow(Math.abs(current.y - neighbor.y), 2))
-        );
-    }
-
     protected setMap(grid: Array<Array<Node>>, startPos: Position): void {
         grid.forEach((row) => {
             return row.forEach((node) => {
@@ -55,16 +47,6 @@ export default class Dijkstra extends PathfindingAlgorithm {
                 this.pathValues.set(this.hash(nodePosition), pathData);
             });
         });
-    }
-
-    findShortestPath(finishPos: Position): void {
-        for (
-            let curPosition = finishPos;
-            curPosition != null;
-            curPosition = this.pathValues.get(this.hash(curPosition)).previousNode
-        ) {
-            this.finalPath.unshift(curPosition);
-        }
     }
 
     protected reset(): void {
