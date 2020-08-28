@@ -10,7 +10,9 @@ export class PriorityQueue<T extends Node> {
 
     constructor() {}
 
-    insert(val: T, priority: number) {
+    insert(val: T, priority: number, replace?: boolean) {
+        replace = replace !== undefined;
+
         if (!this.heap.length || this.heap[this.heap.length - 1][1] > priority) {
             this.heap.push([val, priority]);
             return this.heap;
@@ -18,8 +20,6 @@ export class PriorityQueue<T extends Node> {
 
         const tmp: Tuple<T>[] = [];
         let found = false;
-
-        console.log("THE HEAP BEFORE",this.heap);
 
         for (let i = 0; i < this.heap.length; i++) {
             const p = this.heap[i][1];
@@ -29,14 +29,11 @@ export class PriorityQueue<T extends Node> {
                 tmp.push([val, priority]);
                 found = true;
             }
-            
-            if (!found || !(n.x === val.x && n.y === val.y)) {
+
+            if (!(replace && n.x === val.x && n.y === val.y)) {
                 tmp.push(this.heap[i]);
-            }     
+            }
         }
-
-        console.log("HEAP AFTER", tmp);
-
         return (this.heap = tmp);
     }
 

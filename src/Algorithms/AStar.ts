@@ -1,4 +1,4 @@
-import PathfindingAlgorithm, { PathData } from "./PathfindingAlgorithm";
+import PathfindingAlgorithm, { PathData } from './PathfindingAlgorithm';
 import { Node, Position } from '../IPathfinder';
 import { PriorityQueue } from './DataStructures/PriorityQueue';
 
@@ -7,7 +7,7 @@ export default class AStar extends PathfindingAlgorithm {
 
     public calculatePath(grid: Node[][], startPos: Position, finishPos: Position): void {
         this.reset();
-        this.setMap(grid);
+        this.setMap(grid, startPos);
         this.minHeap.insert(startPos, 0);
         while (this.minHeap.size() > 0) {
             let closestPosition: Position = this.minHeap.pop();
@@ -25,33 +25,45 @@ export default class AStar extends PathfindingAlgorithm {
 
     private setNeighbors(grid: Node[][], current: Position, start: Position, finish: Position): void {
         let neighbors = this.getNeighbors(grid, current);
+        let costSoFar: number = this.pathValues.get(this.hash(current)).shortestPath;
         for (let neighbor of neighbors) {
-            let distanceFromStart: number = this.getDistance(grid, neighbor, start);
+            let pathData: PathData = this.pathValues.get(this.hash(neighbor));
+            let distanceFromStart: number = costSoFar + this.getDistance(grid, neighbor, current);
             let distanceFromFinish: number = this.getDistance(grid, neighbor, finish);
             let totalCost: number = distanceFromStart + distanceFromFinish;
-
             let prevPathData: PathData = this.pathValues.get(this.hash(neighbor));
-            let prevCost: number = this.minHeap.get(neighbor);
-            if (prevPathData.previousNode !== null && prevCost !== null) {
-                console.log(prevCost);
-                // if (!prevCost) {
-                //     throw new Error('prevCost should be defined');
-                // }
+            if (prevPathData.previousNode !== null) {
+                let prevCost: number = prevPathData.shortestPath + distanceFromFinish;
                 if (totalCost < prevCost) {
-                    this.pathValues.set(this.hash(neighbor), {isVisited: false, previousNode: current})
+                    this.minHeap.insert(neighbor, totalCost, true);
+                    this.pathValues.set(this.hash(neighbor), {
+                        isVisited: false,
+                        previousNode: current,
+                        shortestPath: distanceFromStart,
+                    });
                 }
             } else {
-                this.pathValues.set(this.hash(neighbor), {isVisited: false, previousNode: current})
+                this.minHeap.insert(neighbor, totalCost, false);
+                this.pathValues.set(this.hash(neighbor), {
+                    isVisited: false,
+                    previousNode: current,
+                    shortestPath: distanceFromStart,
+                });
             }
-            this.minHeap.insert(neighbor, totalCost);
         }
     }
 
-    protected setMap(grid: Node[][]): void {
+    protected setMap(grid: Node[][], startPos: Position): void {
         grid.forEach((row: Node[]) => {
             return row.forEach((node: Node) => {
                 let nodePosition: Position = node.position;
-                let pathData: PathData = { isVisited: false, previousNode: null };
+                let shortestPath: number;
+                if (this.equalPosition(startPos, nodePosition)) {
+                    shortestPath = 0;
+                } else {
+                    shortestPath = Infinity;
+                }
+                let pathData: PathData = { isVisited: false, shortestPath: shortestPath, previousNode: null };
                 this.pathValues.set(this.hash(nodePosition), pathData);
             });
         });
@@ -60,5 +72,4 @@ export default class AStar extends PathfindingAlgorithm {
         this.clear();
         this.minHeap = new PriorityQueue<Position>();
     }
-    
-} 
+}

@@ -203,8 +203,6 @@ export default class Pathfinder extends Component<{}, State> {
             finalPaths.push(prevAlgorithm.produceFinalPath());
         }
 
-        console.log(visitedPaths);
-
         for (let idx = 0; idx < visitedPaths.length; idx++) {
             let visited: Position[] = visitedPaths[idx];
             for (let pos of visited) {
@@ -369,7 +367,6 @@ export default class Pathfinder extends Component<{}, State> {
                 grid[y][x].weight = newWeight;
             }
         }
-        console.log(grid);
         this.setState({ grid: grid });
     }
 
