@@ -1,6 +1,6 @@
 {
   "name": "pathfinding-visualizer",
-  "homepage": "http://AntonGrier.github.io/PathfindingVisualiser",
+  "homepage": "http://antongrier.github.io/PathfindingVisualiser",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
