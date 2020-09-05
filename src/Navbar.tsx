@@ -25,71 +25,71 @@ export default class Navbar extends Component<Props> {
 
     render(): any {
         return (
-            <div className="navbar">
-                <button
+            <ul>
+                <li><a
                     onClick={() => {
                         this.props.generateMaze(new Ellers());
                     }}
                 >
                     Ellers
-                </button>
-                <button
+                </a></li>
+                <li><a
                     onClick={() => {
                         this.props.generateMaze(new RecursiveBacktracking());
                     }}
                 >
                     Recursive BackTrack
-                </button>
-                <button
+                </a></li>
+                <li><a
                     onClick={() => {
                         this.props.generateMaze(new RecursiveDivision());
                     }}
                 >
                     Recursive Division
-                </button>
-                <button
+                </a></li>
+                <li><a
                     onClick={() => {
                         this.props.generateLandscape();
                     }}
                 >
                     Generate Landscape
-                </button>
-                <button
+                </a></li>
+                <li><a
                     onClick={() => {
                         this.props.performAlgorithm(new AStar());
                     }}
                 >
                     AStar
-                </button>
-                <button
+                </a></li>
+                <li><a
                     onClick={() => {
                         this.props.performAlgorithm(new Dijkstra());
                     }}
                 >
                     Dijkstra
-                </button>
-                <button
+                </a></li>
+                <li><a
                     onClick={() => {
                         this.props.performAlgorithm(new DFS());
                     }}
                 >
                     DFS
-                </button>
-                <button
+                </a></li>
+                <li><a
                     onClick={() => {
                         this.props.performAlgorithm(new BFS());
                     }}
                 >
                     BFS
-                </button>
-                <button
+                </a></li>
+                <li><a
                     onClick={() => {
                         this.props.clearPath();
                     }}
                 >
                     Clear
-                </button>
-            </div>
+                </a></li> 
+            </ul>
         );
     }
 }

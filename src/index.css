@@ -22,7 +22,7 @@ body {
     background-repeat: no-repeat;
     width: 25px;
     height: 25px;
-    background-color: white;
+    background-color: greenyellow;
 }
 
 .cell-finish {
@@ -31,7 +31,7 @@ body {
     background-repeat: no-repeat;
     width: 25px;
     height: 25px;
-    background-color: white;
+    background-color: pink;
 }
 
 .cell-midpoint {
@@ -40,7 +40,7 @@ body {
     background-repeat: no-repeat;
     width: 25px;
     height: 25px;
-    background-color: white;
+    background-color: orange;
 }
 
 .cell-wall {
@@ -91,8 +91,9 @@ body {
     /* border-right: 0.05px solid #b2c9e3;
     border-bottom: 0.05px solid #b2c9e3; */
     /* margin: 1px; */
-    margin-top: 5vh;
+    /* margin-top: 5vh; */
     display: inline-block;
+    margin-top: 3.5vh;
     height: auto;
     width: auto;
     background-color: #b2c9e3;
@@ -110,12 +111,39 @@ body {
     /* cursor: default; */
 }
 
-.navbar {
+/* .navbar {
     width: 100vw;
     height: 10vh;
     text-align: center;
     background-color: lightblue;
-}
+} */
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    background-color: #111;
+  }
 
 @keyframes wall {
     0% {
