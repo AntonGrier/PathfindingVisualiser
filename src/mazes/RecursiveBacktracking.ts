@@ -1,5 +1,5 @@
 import { Position, GRID_W, GRID_H } from '../IPathfinder';
-import WallCarver from './wallCarver';
+import WallCarver from './WallCarver';
 
 export default class RecursiveBacktracking extends WallCarver {
     visited: Map<String, boolean>;

@@ -1,5 +1,3 @@
-import PathfindingAlgorithm from './Algorithms/PathfindingAlgorithm';
-
 const screenWidth = Math.floor((0.95 * window.innerWidth) / 25);
 const screenHeight = Math.floor((0.8 * window.innerHeight) / 25);
 export const GRID_W = screenWidth % 2 === 0 ? screenWidth - 1 : screenWidth;

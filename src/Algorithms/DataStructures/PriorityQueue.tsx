@@ -8,8 +8,6 @@ export type Tuple<T> = [T, number];
 export class PriorityQueue<T extends Node> {
     heap: Tuple<T>[] = [];
 
-    constructor() {}
-
     insert(val: T, priority: number, replace?: boolean) {
         replace = replace !== undefined;
 

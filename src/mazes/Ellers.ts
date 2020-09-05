@@ -1,6 +1,5 @@
-import MazeGenerator from './MazeGenerator';
-import { Position, GRID_W, GRID_H } from '../IPathfinder';
-import WallCarver, { ADJUSTED_WIDTH, ADJUSTED_HEIGHT } from './wallCarver';
+import { Position } from '../IPathfinder';
+import WallCarver, { ADJUSTED_WIDTH, ADJUSTED_HEIGHT } from './WallCarver';
 
 export default class Ellers extends WallCarver {
     public generateWalls(): Position[] {

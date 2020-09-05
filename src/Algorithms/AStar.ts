@@ -27,7 +27,7 @@ export default class AStar extends PathfindingAlgorithm {
         let neighbors = this.getNeighbors(grid, current);
         let costSoFar: number = this.pathValues.get(this.hash(current)).shortestPath;
         for (let neighbor of neighbors) {
-            let pathData: PathData = this.pathValues.get(this.hash(neighbor));
+            // let pathData: PathData = this.pathValues.get(this.hash(neighbor));
             let distanceFromStart: number = costSoFar + this.getDistance(grid, neighbor, current);
             let distanceFromFinish: number = this.getDistance(grid, neighbor, finish);
             let totalCost: number = distanceFromStart + distanceFromFinish;

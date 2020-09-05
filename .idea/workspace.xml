@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f4736c54-1f45-4798-9ab5-b8fb980d11fe" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="C:\Users\Anton\Documents\Pathfinder\.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1fw8WAZFZ8DaaW3GagCEb2K4nnX" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/project_team112-master" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="C:\Users\Anton\Documents\Pathfinder\node_modules\prettier" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f4736c54-1f45-4798-9ab5-b8fb980d11fe" name="Default Changelist" comment="" />
+      <created>1597117823850</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1597117823850</updated>
+      <workItem from="1597117828484" duration="573000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Rooms/BuildingReader.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Rooms/BuildingReader.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Rooms/AbsKeyChecker.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Rooms/RoomsReader.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Rooms/AbsHtmlReader.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Rooms/RoomsReader.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Rooms/AbsHtmlReader.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Rooms/AbsKeyChecker.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Courses/SectionFilter.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Courses/SectionFilter.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Parsers/AbsParser.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Parsers/CoursesParser.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Parsers/RoomsParser.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Parsers/RoomsParser.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Parsers/AbsParser.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/Parsers/CoursesParser.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/Validation/TransformValidator.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/Validation/OptionsValidator.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/Validation/BodyValidator.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/Validation/BodyValidator.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/Validation/QueryValidator.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/Validation/TransformValidator.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/Validation/QueryValidator.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/Validation/OptionsValidator.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Dataset/IDatasetManager.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Dataset/DatasetManager.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Dataset/IDatasetManager.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Dataset/DatasetManager.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/QueryManager.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/QueryTransformations.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/QueryManager.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/QueryTransformations.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/IQueryManager.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Query/IQueryManager.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/controller/InsightFacade.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/controller/IInsightFacade.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/controller/IInsightFacade.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/controller/InsightFacade.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Disc/DiscManager.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Disc/DiscManager.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/DatasetReader.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/DatasetInput/DatasetReader.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/scheduler/Scheduler.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/scheduler/RoomHeap.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/scheduler/IScheduler.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/scheduler/IScheduler.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/scheduler/RoomHeap.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/scheduler/Scheduler.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/rest/Server.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/rest/ServerManager.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/rest/Server.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/rest/ServerManager.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/test/InsightFacade.spec.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/test/Scheduler.spec.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/test/Server.spec.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/test/InsightFacade.spec.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/test/Server.spec.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/test/TestUtil.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/test/Scheduler.spec.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/test/TestUtil.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Util.js" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/Util.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/App.js.map" />
+        <option value="$USER_HOME$/Desktop/project_team112-master/src/App.js" />
+      </list>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="740" y="311" key="FileChooserDialogImpl" timestamp="1597117870797">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="740" y="311" key="FileChooserDialogImpl/0.30.1920.1050@0.30.1920.1050" timestamp="1597117870797" />
+  </component>
+</project>
