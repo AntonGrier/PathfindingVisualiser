@@ -1,18 +1,11 @@
-import * as React from 'react';
-import Pathfinder from './Pathfinder';
-import { Component } from 'react';
+import Pathfinder from './Pathfinder'
+import { FunctionComponent } from 'react'
+import React from 'react'
 
-export default class App extends Component {
-    constructor(props: any) {
-        super(props);
-        this.state = {};
-    }
-
-    render(): any {
-        return (
-            <div className="app">
-                <Pathfinder />
-            </div>
-        );
-    }
+export const App: FunctionComponent = () => {
+  return (
+    <div className='app'>
+      <Pathfinder />
+    </div>
+  )
 }
