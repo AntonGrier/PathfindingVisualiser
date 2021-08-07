@@ -1,4 +1,4 @@
-import { GRID_H, GRID_W, Node, NodeType, Position } from '../IPathfinder'
+import { GRID_H, GRID_W, Node, NodeType, Position } from '../models'
 
 export interface PathData {
   isVisited: boolean
@@ -8,8 +8,8 @@ export interface PathData {
 
 export default abstract class PathfindingAlgorithm {
   pathValues: Map<string, PathData> = new Map<string, PathData>()
-  finalPath: Array<Position> = []
-  visitedNodesInOrder: Array<Position> = []
+  finalPath: Position[] = []
+  visitedNodesInOrder: Position[] = []
 
   protected abstract setMap(grid: Node[][], startPos?: Position): void
 
@@ -23,8 +23,8 @@ export default abstract class PathfindingAlgorithm {
     return this.finalPath.slice(1, this.visitedNodesInOrder.length - 1)
   }
 
-  protected getNeighbors(grid: Node[][], position: Position): Array<Position> {
-    let neighbors: Array<Position> = []
+  protected getNeighbors(grid: Node[][], position: Position): Position[] {
+    let neighbors: Position[] = []
     neighbors.push({ x: position.x + 1, y: position.y })
     neighbors.push({ x: position.x, y: position.y + 1 })
     neighbors.push({ x: position.x, y: position.y - 1 })

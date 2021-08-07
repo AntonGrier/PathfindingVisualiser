@@ -13,6 +13,7 @@ import AStar from './Algorithms/AStar'
 interface Props {
   performAlgorithm: (algorithm: PathfindingAlgorithm) => void
   clearPath: () => void
+  clearWall: () => void
   generateMaze: (mazeGenerator: MazeGenerator) => void
 }
 
@@ -94,7 +95,16 @@ export default class Navbar extends Component<Props> {
               this.props.clearPath()
             }}
           >
-            Clear
+            Clear Path
+          </a>
+        </li>
+        <li>
+          <a
+            onClick={() => {
+              this.props.clearWall()
+            }}
+          >
+            Clear Walls
           </a>
         </li>
       </ul>
