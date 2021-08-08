@@ -18,7 +18,6 @@ export default class RecursiveBacktracking extends WallCarver {
     this.visit(current)
     let neighbors: Position[] = this.getUnvisitedNeighbors(current)
     for (let neighbor of neighbors) {
-      console.log(neighbor)
       if (!this.isVisisted(neighbor)) {
         this.placeWallBetweenPositions(current, neighbor)
         this.carveWalls(neighbor)

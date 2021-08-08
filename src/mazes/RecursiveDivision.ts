@@ -19,15 +19,11 @@ export default class RecursiveDivision extends MazeGenerator {
     if (vertical) {
       if (width < 4) return
       splitIdx = this.randomEven(ul.x, lr.x)
-      console.log(splitIdx)
       gap = { x: splitIdx, y: this.randomOdd(ul.y, lr.y) }
-      console.log(`Trying ${splitIdx}, gap (${gap.x},${gap.y}) width: ${width} height: ${height}`)
     } else {
       if (height < 4) return
       splitIdx = this.randomEven(ul.y, lr.y)
-      console.log(splitIdx)
       gap = { x: this.randomOdd(ul.x, lr.x), y: splitIdx }
-      console.log(`Trying ${splitIdx}, gap (${gap.x},${gap.y}) width: ${width} height: ${height}`)
     }
 
     for (let i = vertical ? ul.y + 1 : ul.x + 1; i <= (vertical ? lr.y - 1 : lr.x - 1); i++) {
